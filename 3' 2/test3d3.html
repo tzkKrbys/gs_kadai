@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Untitled Document</title>
+	<meta name="Author" content="" />
+	<link rel="stylesheet" type="text/css" href="css/test3d3.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<main>
+		<section>
+			<ul class="navi">
+				<li class="kaiten">kaiten</li>
+				<li class="front clearID">front</li>
+				<li class="back clearID">back</li>
+				<li class="top clearID">top</li>
+				<li class="bottom clearID">bottom</li>
+				<li class="left clearID">left</li>
+				<li class="right clearID">right</li>
+			</ul>
+			<ul class="thumb">
+				<li class="front_SacreCoeur clearID">FR</li>
+				<li class="back_Versailles00 clearID">BC</li>
+				<li class="top_Louvre clearID">TP</li>
+				<li class="bottom_montmartre clearID">BT</li>
+				<li class="left_Versailles02 clearID">LF</li>
+				<li class="right_Versailles01 clearID">RT</li>
+			</ul>
+			<div class="stage">
+				<div id="cube" class="init">
+					<div class="pict side_bottom">BOTTOM</div>
+					<div class="pict side_top">TOP</div>
+					<div class="pict side_back">BACK</div>
+					<div class="pict side_right">RIGHT</div>
+					<div class="pict side_left">LEFT</div>
+					<div class="pict side_front">FRONT</div>
+				</div>
+			</div>
+		</section>
+		
+	</main>
+
+
+	<script>
+		var rollingIntervalID;
+	$(document).ready(function(){
+		$("#cube").css("transform-origin","200px 200px -1000px");
+		setTimeout(function(){
+			$("#cube").toggleClass("init").toggleClass("rollingFor");
+		},500);
+		function rollCube(){
+			rollingIntervalID = setInterval(function(){
+				$("#cube").toggleClass("rollingFor").toggleClass("rollingRev");
+
+			},30000);
+		}
+		rollCube();
+		
+		
+		
+		
+		$(".kaiten").on("click",function(){
+			$("#cube").removeClass();
+			setTimeout(function(){
+				$("#cube").toggleClass("rollingFor");
+				rollCube();
+			},2100);
+		});
+		
+		$("#cube").on("click",function(){
+			$("#cube").removeClass();
+			setTimeout(function(){
+				$("#cube").toggleClass("rollingFor");
+				rollCube();
+			},2100);
+		});
+		
+		$(".clearID").on("click",function(){
+			clearInterval(rollingIntervalID);
+		});
+		
+		$(".front").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+		});
+		$(".back").on("click",function(){
+			$("#cube").removeClass().addClass("back");
+		});
+		$(".top").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+		});
+		$(".bottom").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+		});
+		$(".left").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+		});
+		$(".right").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+		});
+
+
+
+		$(".front_SacreCoeur").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+			$("body").css("background-image", "url(../images/ChampsElysees.jpg)");
+		});
+		$(".back_Versailles00").on("click",function(){
+			$("body").css("background-image", "url(../images/Versailles00.jpg)");
+			$("#cube").removeClass();
+			setTimeout(function(){
+				$("#cube").removeClass().addClass("back");
+			},2000);
+		});
+		$(".top_Louvre").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+			$("body").css("background-image", "url(../images/Louvre.jpg)");
+		});
+		$(".bottom_montmartre").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+			$("body").css("background-image", "url(../images/montmartre.jpg)");
+		});
+		$(".left_Versailles02").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+			$("body").css("background-image", "url(../images/Versailles02.jpg)");
+		});
+		$(".right_Versailles01").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+			$("body").css("background-image", "url(../images/Versailles01.jpg)");
+		});
+
+
+		
+/*		$(".front_SacreCoeur").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+			$("body").css("background-image", "url(../images/ChampsElysees.jpg)");
+		});
+		$(".back_Versailles00").on("click",function(){
+			$("#cube").removeClass().addClass("back");
+			$("body").css("background-image", "url(../images/Versailles00.jpg)");
+		});
+		$(".top_Louvre").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+			$("body").css("background-image", "url(../images/Louvre.jpg)");
+		});
+		$(".bottom_montmartre").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+			$("body").css("background-image", "url(../images/montmartre.jpg)");
+		});
+		$(".left_Versailles02").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+			$("body").css("background-image", "url(../images/Versailles02.jpg)");
+		});
+		$(".right_Versailles01").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+			$("body").css("background-image", "url(../images/Versailles01.jpg)");
+		});*/
+
+
+	});
+	</script>
+</body>
+
+</html>

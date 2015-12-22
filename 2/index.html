@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="css/style.css">
+	<title>じゃんけん</title>
+
+</head>
+
+<body id="index">
+	<div class="inner">
+		<header>
+			<h1>じゃんけん</h1>
+		</header>
+		<main>
+			<div class="clearfix">
+				<div class="black">BEST SCORE：　<span id="bestScore">0</span>
+				</div>
+				<div class="black">SCORE：　<span id="score">0</span>
+				</div>
+				<div class="black">TIME：　<span id="time">30</span>
+				</div>
+			</div>
+
+			<div id="waku">
+				<div id="countDown"><span class="init">click</span>
+				</div>
+				<div id="compHand"></div>
+				<div id="myHand"></div>
+			</div>
+
+
+
+			<audio id="soundFileGuu" prelord="auto" <!--controls-->>
+				<source src="audio/guu.m4a">
+			</audio>
+			<audio id="soundFileChoki" prelord="auto" <!--controls-->>
+				<source src="audio/choki.m4a">
+			</audio>
+			<audio id="soundFilePar" prelord="auto" <!--controls-->>
+				<source src="audio/par.m4a">
+			</audio>
+			<audio id="soundFilejanken" prelord="auto" <!--controls-->>
+				<source src="audio/janken.m4a">
+			</audio>
+			<audio id="soundFileCionSound" prelord="auto" <!--controls-->>
+				<source src="audio/cionSound.mp3">
+			</audio>
+			<audio id="soundFileSuperMarioFireBallSound" prelord="auto" <!--controls-->>
+				<source src="audio/SuperMarioFireBallSound.mp3">
+			</audio>
+			<audio id="soundFileSuperMarioStomp" prelord="auto" <!--controls-->>
+				<source src="audio/SuperMarioStomp.mp3">
+			</audio>
+			<audio id="soundFileSuperMarioBump" prelord="auto" <!--controls-->>
+				<source src="audio/SuperMarioBump.mp3">
+			</audio>
+			<audio id="soundFileMarioDieSound" prelord="auto" <!--controls-->>
+				<source src="audio/marioDieSound.mp3">
+			</audio>
+			<audio id="soundFileMarioBGMStart" prelord="auto" <!--controls-->>
+				<source src="audio/marioBGMStart.mp3">
+			</audio>
+			<audio id="soundFileSuperMarioBrosCourseClearSoundEffect" prelord="auto" <!--controls-->>
+				<source src="audio/SuperMarioBrosCourseClearSoundEffect.mp3">
+			</audio>
+			<audio id="soundFileSuperMarioBrosUnderground" prelord="auto" <!--controls-->>
+				<source src="audio/SuperMarioBrosUnderground.mp3">
+			</audio>
+			<audio id="soundFileSuperMarioMusicHurryUp" prelord="auto" <!--controls-->>
+				<source src="audio/SuperMarioMusicHurryUp.mp3">
+			</audio>
+			<audio id="soundFileSuperMarioGroundThemeCut" prelord="auto" <!--controls-->>
+				<source src="audio/SuperMarioGroundThemeCut.mp3">
+			</audio>
+
+			<ul id="setumei">
+				<li>◆操作説明◆</li>
+				<li>Fキー：グー</li>
+				<li>Dキー：チョキ</li>
+				<li>Sキー：パー</li>
+				<li>Vキー：赤ファイア</li>
+				<li>Cキー：緑ファイア</li>
+				<li>Xキー：青ファイア</li>
+				<li>■注意：macのchromeブラウザでしか動作しません。</li>
+			</ul>
+		</main>
+
+	</div>
+	<script>
+		window.onload = function () {
+			var isMarioFalling = false;
+			var soundFileGuu = document.querySelector('#soundFileGuu');
+			var soundFileChoki = document.querySelector('#soundFileChoki');
+			var soundFilePar = document.querySelector('#soundFilePar');
+			var soundFilejanken = document.querySelector('#soundFilejanken');
+			var soundFileCionSound = document.querySelector('#soundFileCionSound');
+			var soundFileSuperMarioFireBallSound = document.querySelector('#soundFileSuperMarioFireBallSound');
+			var soundFileSuperMarioStomp = document.querySelector('#soundFileSuperMarioStomp');
+			var soundFileSuperMarioBump = document.querySelector('#soundFileSuperMarioBump');
+			var soundFileMarioDieSound = document.querySelector('#soundFileMarioDieSound');
+			var soundFileMarioBGMStart = document.querySelector('#soundFileMarioBGMStart');
+			var soundFileSuperMarioBrosCourseClearSoundEffect = document.querySelector('#soundFileSuperMarioBrosCourseClearSoundEffect');
+			var soundFileSuperMarioBrosUnderground = document.querySelector('#soundFileSuperMarioBrosUnderground');
+			var soundFileSuperMarioMusicHurryUp = document.querySelector('#soundFileSuperMarioMusicHurryUp');
+			var soundFileSuperMarioGroundThemeCut = document.querySelector('#soundFileSuperMarioGroundThemeCut');
+
+
+			var waku = document.querySelector('#waku');
+			var coundDown = document.querySelector('#countDown');
+			/*var offsetX = document.querySelector('#offsetX');
+			var offsetY = document.querySelector('#offsetY');*/
+			var bestScore = {
+				point: 0,
+				elem: document.querySelector('#bestScore')
+			};
+			var score = {
+				point: 0,
+				elem: document.querySelector('#score')
+			};
+			var time = {
+				now: 30,
+				elem: document.querySelector('#time'),
+			};
+			var gcp = ['グー', 'チョキ', 'パー'];
+			var isPlaying = false;
+			var speed = {
+				x: 4,
+				y: 8
+			};
+			var compBall = {
+				x: 250,
+				y: 15,
+				dx: 4,
+				dy: 8,
+				speed: {
+					x: 2,
+					y: 2
+				},
+				nowHand: 'グー',
+				elem: document.querySelector('#compHand')
+			};
+			var myBall = {
+				x: 250,
+				y: 300,
+				nowHand: 'グー',
+				elem: document.querySelector('#myHand')
+			};
+			/*			var compHand = document.querySelector('#compHand');
+						var myHand = document.querySelector('#myHand');*/
+			console.dir(compHand);
+			var timeIdAnime;
+
+			var marioFallingTimerId;
+			var fallSpeed;
+
+			function marioFalling() {
+				myBall.y += fallSpeed;
+				fallSpeed += 0.5;
+				myHand.style.top = myBall.y + "px";
+				marioFallingTimerId = setTimeout(marioFalling, 15);
+			}
+
+			function anime() {
+				compBall.y += compBall.speed.y;
+				compHand.style.top = compBall.y + "px";
+				compBall.x += compBall.speed.x;
+				compHand.style.left = compBall.x + "px";
+				if (compBall.x <= 0) {
+					compBall.x = 0;
+					compBall.speed.x = -(compBall.speed.x);
+					console.log(compBall.x);
+					console.log(compBall.speed.x);
+				} else if (compBall.x > 500) {
+					compBall.x = 500;
+					compBall.speed.x = -(compBall.speed.x);
+					console.log(compBall.x);
+					console.log(compBall.speed.x);
+				}
+				/*if (compBall.x > 500 || compBall.x <= 0) {
+					compBall.speed.x = -(compBall.speed.x);
+					console.log(compBall.x);
+					console.log(compBall.speed.x);
+				}*/
+				/*else if (compBall.x <= 0) {
+									compBall.dx = 4;
+								}*/
+				if (compBall.y <= 0) {
+					compBall.y = 0;
+					compBall.speed.y = -(compBall.speed.y);
+					console.log(compBall.y);
+					console.log(compBall.speed.y);
+				} else if (compBall.y > 300) {
+					compBall.y = 300;
+					compBall.speed.y = -(compBall.speed.y);
+					console.log(compBall.y);
+					console.log(compBall.speed.y);
+				}
+				/*if (compBall.y > 300 || compBall.y <= 0) {
+					compBall.speed.y = -(compBall.speed.y);
+					console.log(compBall.y);
+					console.log(compBall.speed.y);
+				}*/
+				/*else if (compBall.y <= 0) {
+									compBall.speed.y = 8;
+								}*/
+				timeIdAnime = setTimeout(anime, 20);
+				/*if (Math.abs(myBall.x - compBall.x) < 50 && Math.abs(myBall.y - compBall.y) < 50) {*/
+				if (Math.pow(Math.abs(myBall.x - compBall.x), 2) + Math.pow(Math.abs(myBall.y - compBall.y), 2) < 10000) {
+					syoutotsu();
+				}
+			}
+			var isTurning = false;
+
+			function syoutotsu() {
+				var result = winLose(myBall.nowHand, compBall.nowHand);
+				console.log(result);
+				if (result == 'あいこ') {
+					if (!isTurning) {
+						soundFileSuperMarioStomp.pause();
+						soundFileSuperMarioStomp.currentTime = 0;
+						soundFileSuperMarioStomp.play();
+						isTurning = true;
+						compBall.speed.y = -(compBall.speed.y);
+						setTimeout(function () {
+							isTurning = false;
+						}, 500);
+					}
+				} else if (result == '勝ち') {
+					if (!isTurning) {
+						isTurning = true;
+						compBall.speed.x = -(compBall.speed.x);
+						compBall.speed.y = -(compBall.speed.y);
+						setTimeout(function () {
+							isTurning = false;
+						}, 500);
+					}
+					soundFileCionSound.pause();
+					soundFileCionSound.currentTime = 0;
+					soundFileCionSound.play();
+					console.log('勝ち');
+					score.point += 100;
+					score.elem.innerHTML = score.point;
+				} else if (result == '負け') {
+					isPlaying = "inProgress";
+					isMarioFalling = true;
+					waku.style.backgroundColor = "rgba(255,200,200,0.6)";
+					compBall.elem.style.backgroundImage = "url(images/Bowser.gif)";
+					myBall.elem.style.backgroundImage = "url(images/marioDie.gif)";
+					soundFilejanken.pause();
+					soundFilejanken.currentTime = 0;
+					soundFileSuperMarioGroundThemeCut.pause();
+					soundFileSuperMarioGroundThemeCut.currentTime = 0;
+					soundFileSuperMarioBrosUnderground.pause();
+					soundFileSuperMarioBrosUnderground.currentTime = 0;
+					soundFileSuperMarioMusicHurryUp.pause();
+					soundFileSuperMarioMusicHurryUp.currentTime = 0;
+					soundFileMarioDieSound.play();
+					clearTimeout(timerId);
+					clearTimeout(timeIdAnime);
+					clearTimeout(time.timerId);
+					coundDown.style.fontSize = "200px";
+					coundDown.innerHTML = "LOSE";
+					bestScoreRecord();
+					setTimeout(function () {
+						marioFalling();
+					}, 800);
+					setTimeout(function () {
+						clearTimeout(marioFallingTimerId);
+					}, 2600);
+					setTimeout(function () {
+						isPlaying = false;
+					}, 3000);
+				}
+			}
+
+			function bestScoreRecord() {
+				if (bestScore.point < score.point) {
+					bestScore.point = score.point;
+					bestScore.elem.innerHTML = bestScore.point;
+				}
+			}
+
+			function winLose(x, y) {
+				if (x == y) {
+					/*document.querySelector('#result').innerHTML = 'あいこ';*/
+					return 'あいこ';
+				} else if (x == 'グー') {
+					if (y == 'チョキ') {
+						/*document.querySelector('#result').innerHTML = '勝ち';*/
+						return '勝ち';
+					} else if (y == 'パー') {
+						/*document.querySelector('#result').innerHTML = '負け';*/
+						return '負け';
+					}
+				} else if (x == 'チョキ') {
+					if (y == 'パー') {
+						/*document.querySelector('#result').innerHTML = '勝ち';*/
+						return '勝ち';
+					} else if (y == 'グー') {
+						/*document.querySelector('#result').innerHTML = '負け';*/
+						return '負け';
+					}
+				} else if (x == 'パー') {
+					if (y == 'グー') {
+						/*document.querySelector('#result').innerHTML = '勝ち';*/
+						return '勝ち';
+					} else if (y == 'チョキ') {
+						/*document.querySelector('#result').innerHTML = '負け';*/
+						return '負け';
+					}
+				}
+			}
+
+			function randomNum(arr) {
+				var num = Math.floor(Math.random() * arr.length);
+				return arr[num];
+			}
+
+			function changeColor(x) { //引数xはcompBall(or myBall)オブジェクト
+				if (x.nowHand == 'グー') {
+					x.elem.style.backgroundImage = "url(images/guu_90x90.png)";
+					/*x.elem.innerHTML = "グー";*/
+					if (x == compBall) {
+						soundFileGuu.play();
+					}
+				} else if (x.nowHand == 'チョキ') {
+					x.elem.style.backgroundImage = "url(images/choki_90x90.png)";
+					/*x.elem.innerHTML = "チョキ";*/
+					if (x == compBall) {
+						soundFileChoki.play();
+					}
+				} else if (x.nowHand == 'パー') {
+					x.elem.style.backgroundImage = "url(images/par_90x90.png)";
+					/*x.elem.innerHTML = "パー";*/
+					if (x == compBall) {
+						soundFilePar.play();
+					}
+				}
+			}
+
+			function gcpChang(x, y) { //引数xはgcp配列、引数yはcompBall(or myBall)オブジェクト
+				y.nowHand = randomNum(x);
+				console.log(y.nowHand);
+				changeColor(y);
+			}
+
+			var numCount = 3;
+			var timerId;
+
+			function countDownNum(x) {
+				console.log(x);
+				countDown.innerHTML = x;
+				x = x - 1;
+				if (x == 0) {
+					soundFilejanken.play();
+				}
+				if (x < 0) {
+					gcpChang(gcp, compBall);
+					gcpChang(gcp, myBall);
+					x = 3;
+				}
+				timerId = setTimeout(function () {
+					countDownNum(x);
+				}, 1000);
+			}
+
+			/*document.querySelector('#start').onclick = function () {
+				isPlaying = true;
+				soundFileMarioBGMStart.play();
+				setTimeout(function(){
+					countDownNum(numCount);
+					anime();
+				},2800);
+			};*/
+
+			function stop() {
+					isPlaying = "inProgress";
+					clearTimeout(timerId);
+					clearTimeout(timeIdAnime);
+					compBall.elem.style.backgroundImage = "none";
+					myBall.elem.style.backgroundImage = "none";
+					isPlaying = false;
+				}
+				/*document.querySelector('#stop').onclick = stop;*/
+				/*			document.querySelector('#stop').onclick = function () {
+								clearTimeout(timerId);
+								console.log('クリア');
+								clearTimeout(timeIdAnime);
+							};*/
+
+			document.onkeypress = function (e) {
+				console.log(e);
+			}
+			console.dir(waku);
+
+
+
+			function startStop() {
+				if (isPlaying == "inProgress") {
+					return;
+				} else if (!isPlaying) {
+					isPlaying = "inProgress";
+					score.point = 0;
+					score.elem.innerHTML = score.point;
+					isMarioFalling = false;
+					fallSpeed = -14;
+					countDown.innerHTML = "start";
+					coundDown.style.fontSize = "140px";
+					waku.style.backgroundColor = "rgba(255,255,255,0.6)";
+					compBall.speed.x = 4;
+					compBall.speed.y = 8;
+					compBall.y = 15;
+					compHand.style.top = compBall.y + "px";
+					compBall.x = 250;
+					compHand.style.left = compBall.x + "px";
+					/*document.querySelector('#soundFileMarioBGMStart').play();*/
+					soundFileSuperMarioGroundThemeCut.play();
+					document.querySelector('body').style.backgroundImage = "url(images/marioBlock.jpg)";
+					compBall.elem.style.backgroundImage = "url(images/Bowser.gif)";
+					myBall.elem.style.backgroundImage = "url(images/marioStandUp.gif)";
+					compBall.nowHand = "";
+					myBall.nowHand = "";
+					document.querySelector('.inner').style.backgroundImage = "url(images/superMarioBros.gif)";
+					setTimeout(function () {
+						countDownNum(numCount);
+						coundDown.style.fontSize = "300px";
+						time.now = 30;
+						timeCount();
+						anime();
+						isPlaying = true;
+					}, 2800);
+				} else {
+					isPlaying = "inProgress";
+					clearTimeout(timerId);
+					clearTimeout(timeIdAnime);
+					clearTimeout(time.timerId);
+					isPlaying = false;
+					soundFileSuperMarioGroundThemeCut.pause();
+					soundFileSuperMarioGroundThemeCut.currentTime = 0;
+					soundFileSuperMarioBrosUnderground.pause();
+					soundFileSuperMarioBrosUnderground.currentTime = 0;
+					soundFileSuperMarioMusicHurryUp.pause();
+					soundFileSuperMarioMusicHurryUp.currentTime = 0;
+					setTimeout(function () {
+						isPlaying = false;
+					}, 2000);
+				}
+			}
+
+			function timeCount() {
+				if (time.now <= 0) {
+					startStop();
+					soundFilejanken.pause();
+					soundFilejanken.currentTime = 0;
+					setTimeout(function () {
+						waku.style.backgroundColor = "rgba(255,255,255,0.6)";
+						document.querySelector('.inner').style.backgroundImage = "url(images/superMarioGoalScreen.jpeg)";
+						compBall.elem.style.backgroundImage = "url(images/peach.gif)";
+						myBall.elem.style.backgroundImage = "url(images/mario90x90.gif)";
+						soundFileSuperMarioGroundThemeCut.pause();
+						soundFileSuperMarioGroundThemeCut.currentTime = 0;
+						soundFileSuperMarioBrosUnderground.pause();
+						soundFileSuperMarioBrosUnderground.currentTime = 0;
+						soundFileSuperMarioMusicHurryUp.pause();
+						soundFileSuperMarioMusicHurryUp.currentTime = 0;
+						soundFileSuperMarioBrosCourseClearSoundEffect.play();
+						coundDown.style.fontSize = "200px";
+						coundDown.innerHTML = "WIN";
+						bestScoreRecord();
+					}, 1000);
+
+				} else {
+					time.now--;
+					console.log(time.now);
+					time.elem.innerHTML = time.now;
+					time.timerId = setTimeout(timeCount, 1000);
+					if (time.now == 20) {
+						soundFileSuperMarioGroundThemeCut.pause();
+						soundFileSuperMarioGroundThemeCut.currentTime = 0;
+						soundFileSuperMarioBrosUnderground.play();
+						compBall.speed.x *= 1.5;
+						compBall.speed.y *= 1.5;
+						waku.style.backgroundColor = "rgba(255,255,125,0.6)";
+						document.querySelector('.inner').style.backgroundImage = "url(images/superMarioUndergroundStage.jpg)";
+						document.querySelector('body').style.backgroundImage = "url(images/marioBlockBlue.jpg)";
+					} else if (time.now == 10) {
+						compBall.speed.x *= 1.5;
+						compBall.speed.y *= 1.5;
+						soundFileSuperMarioBrosUnderground.pause();
+						soundFileSuperMarioBrosUnderground.currentTime = 0;
+						soundFileSuperMarioMusicHurryUp.play();
+						waku.style.backgroundColor = "rgba(255,200,0,0.6)";
+						document.querySelector('.inner').style.backgroundImage = "url(images/superMarioBros2.jpg)";
+						document.querySelector('body').style.backgroundImage = "url(images/marioBlock.jpg)";
+					}
+				}
+			}
+
+			waku.onclick = function () {
+				startStop();
+			};
+			/*waku.onmouseleave = function () {
+							isPlaying = false;
+							clearTimeout(timerId);
+							console.log('クリア');
+							clearTimeout(timeIdAnime);
+						};*/
+
+			var sessyokuX = false;
+			var sessyokuY = false;
+			waku.onmousemove = function (e) {
+				if (isMarioFalling) {
+					return;
+				}
+				/*offsetX.innerHTML = e.pageX;
+				offsetY.innerHTML = e.pageY - waku.offsetTop;*/
+				myBall.x = e.pageX - waku.offsetLeft - 50;
+				myBall.y = e.pageY - waku.offsetTop - 50;
+				if (myBall.x <= 0) {
+					myBall.x = 0;
+					if (!sessyokuX) {
+						soundFileSuperMarioBump.pause();
+						soundFileSuperMarioBump.currentTime = 0;
+						soundFileSuperMarioBump.play();
+					}
+					sessyokuX = true;
+				} else if (myBall.x > 500) {
+					myBall.x = 500;
+					if (!sessyokuX) {
+						soundFileSuperMarioBump.pause();
+						soundFileSuperMarioBump.currentTime = 0;
+						soundFileSuperMarioBump.play();
+					}
+					sessyokuX = true;
+				}
+				if (myBall.y < 0) {
+					myBall.y = 0;
+					if (!sessyokuY) {
+						soundFileSuperMarioBump.pause();
+						soundFileSuperMarioBump.currentTime = 0;
+						soundFileSuperMarioBump.play();
+					}
+					sessyokuY = true;
+				} else if (myBall.y > 300) {
+					myBall.y = 300;
+					if (!sessyokuY) {
+						soundFileSuperMarioBump.pause();
+						soundFileSuperMarioBump.currentTime = 0;
+						soundFileSuperMarioBump.play();
+					}
+					sessyokuY = true;
+				}
+				if (myBall.x > 0 && myBall.x < 500) {
+					sessyokuX = false;
+				}
+				if (myBall.y > 0 && myBall.y < 300) {
+					sessyokuY = false;
+				}
+				myHand.style.left = myBall.x + "px";
+				myHand.style.top = myBall.y + "px";
+			}
+			document.onkeypress = function (e) {
+				if (isMarioFalling) {
+					return;
+				}
+				console.log(e);
+				if (e.charCode == 102) {
+					myBall.nowHand = 'グー';
+					myBall.elem.style.backgroundImage = "url(images/guu_90x90.png)";
+				} else if (e.charCode == 100) {
+					myBall.nowHand = 'チョキ';
+					myBall.elem.style.backgroundImage = "url(images/choki_90x90.png)";
+				} else if (e.charCode == 115) {
+					myBall.nowHand = 'パー';
+					myBall.elem.style.backgroundImage = "url(images/par_90x90.png)";
+				} else if (e.charCode == 118) {
+					myBall.nowHand = 'グー';
+					myBall.elem.style.backgroundImage = "url(images/guu_90x90.png)";
+					fire();
+				} else if (e.charCode == 99) {
+					myBall.nowHand = 'チョキ';
+					myBall.elem.style.backgroundImage = "url(images/choki_90x90.png)";
+					fireGreen();
+				} else if (e.charCode == 120) {
+					myBall.nowHand = 'パー';
+					myBall.elem.style.backgroundImage = "url(images/par_90x90.png)";
+					fireBlue();
+				}
+				soundFileSuperMarioFireBallSound.pause();
+				soundFileSuperMarioFireBallSound.currentTime = 0;
+				soundFileSuperMarioFireBallSound.play();
+			};
+
+
+
+			console.log(soundFileSuperMarioGroundThemeCut.pause());
+
+
+
+
+
+
+
+			//--------------fireball--------------------------------
+			function fire() {
+				var fireBall = document.createElement('div');
+				fireBall.className = "fireBall";
+				index.appendChild(fireBall);
+				var fireBallX = 0;
+				var fireBallY = 550;
+				var fireBallYspeed = -20;
+				var fireBallThrowTimerId;
+				console.log(fireBallY);
+
+				function fireBallThrow() {
+					fireBallX += 16;
+					fireBall.style.left = fireBallX + "px";
+					fireBallYspeed += 2;
+					fireBallY += fireBallYspeed;
+					fireBall.style.top = fireBallY + "px";
+					if (fireBallYspeed >= 20) {
+						fireBallYspeed = -(fireBallYspeed);
+						fireBallY = 550;
+					}
+					fireBallThrowTimerId = setTimeout(fireBallThrow, 18);
+					if(fireBallX >= 1330){
+						fireBall.className = "fireBallStopped";
+						index.removeChild(document.querySelector('.fireBallStopped'));
+						clearTimeout(fireBallThrowTimerId);
+					}
+				}
+				fireBallThrow();
+				/*setTimeout(function () {
+					clearTimeout(fireBallThrowTimerId);
+					fireBall.className = "fireBallStopped";
+					if(document.querySelector('.fireBallStopped')){
+						index.removeChild(document.querySelector('.fireBallStopped'));
+					}
+				}, 2600);*/
+				
+				return fireBallThrow;
+			}
+
+			function fireGreen() {
+				var fireBallGreen = document.createElement('div');
+				fireBallGreen.className = "fireBallGreen";
+				index.appendChild(fireBallGreen);
+				var fireBallXGreen = 0;
+				var fireBallYGreen = 550;
+				var fireBallYspeedGreen = -26;
+				var fireBallThrowTimerIdGreen;
+				console.log(fireBallYGreen);
+				console.log(document.querySelector('.fireBallStopped'));
+				/*if(document.querySelector('.fireBallStopped')){
+					index.removechild(document.querySelector('.fireBallStopped'));
+				}*/
+				function fireBallThrowGreen() {
+					fireBallXGreen += 13;
+					fireBallGreen.style.left = fireBallXGreen + "px";
+					fireBallYspeedGreen += 2;
+					fireBallYGreen += fireBallYspeedGreen;
+					fireBallGreen.style.top = fireBallYGreen + "px";
+					if (fireBallYspeedGreen >= 26) {
+						fireBallYspeedGreen = -(fireBallYspeedGreen);
+						fireBallYGreen = 550;
+					}
+					fireBallThrowTimerIdGreen = setTimeout(fireBallThrowGreen, 18);
+					if(fireBallXGreen >= 1330){
+						fireBallGreen.className = "fireBallStopped";
+						index.removeChild(document.querySelector('.fireBallStopped'));
+						clearTimeout(fireBallThrowTimerIdGreen);
+					}
+				}
+				fireBallThrowGreen();
+				/*setTimeout(function () {
+					clearTimeout(fireBallThrowTimerIdGreen);
+					fireBallGreen.className = "fireBallStopped";
+					index.removeChild(document.querySelector('.fireBallStopped'));
+				}, 2600);*/
+				return fireBallThrowTimerIdGreen;
+			}
+
+			function fireBlue() {
+				var fireBallBlue = document.createElement('div');
+				fireBallBlue.className = "fireBallBlue";
+				index.appendChild(fireBallBlue);
+				var fireBallXBlue = 0;
+				var fireBallYBlue = 550;
+				var fireBallYspeedBlue = -18;
+				var fireBallThrowTimerIdBlue;
+				console.log(fireBallYBlue);
+				console.log(document.querySelector('.fireBallStopped'));
+				/*if(document.querySelector('.fireBallStopped')){
+					index.removechild(document.querySelector('.fireBallStopped'));
+				}*/
+				function fireBallThrowBlue() {
+					fireBallXBlue += 10;
+					fireBallBlue.style.left = fireBallXBlue + "px";
+					fireBallYspeedBlue += 2;
+					fireBallYBlue += fireBallYspeedBlue;
+					fireBallBlue.style.top = fireBallYBlue + "px";
+					if (fireBallYspeedBlue >= 18) {
+						fireBallYspeedBlue = -(fireBallYspeedBlue);
+						fireBallYBlue = 550;
+					}
+					fireBallThrowTimerIdBlue = setTimeout(fireBallThrowBlue, 18);
+					if(fireBallXBlue >= 1330){
+						fireBallBlue.className = "fireBallStopped";
+						index.removeChild(document.querySelector('.fireBallStopped'));
+						clearTimeout(fireBallThrowTimerIdBlue);
+					}
+				}
+				fireBallThrowBlue();
+				/*setTimeout(function () {
+					clearTimeout(fireBallThrowTimerIdBlue);
+					fireBallBlue.className = "fireBallStopped";
+					index.removeChild(document.querySelector('.fireBallStopped'));
+				}, 2600);*/
+				return fireBallThrowTimerIdBlue;
+			}
+		}
+
+
+
+
+		/*		window.onload = function () {
+						//ここにJSを記述
+						var gcp = ['グー', 'チョキ', 'パー'];
+						var num = document.querySelector('#num');
+
+						function comp(arr) {
+							var randNum = Math.floor(Math.random() * gcp.length);
+							return arr[randNum];
+						}
+
+						var gu_btn = document.querySelector('#gu_btn');
+						var cho_btn = document.querySelector('#cho_btn');
+						var par_btn = document.querySelector('#par_btn');
+
+						var listener1 = function () {
+							var compHand = comp(gcp);
+							document.querySelector('#num').innerHTML = compHand;
+							winLose('グー', compHand);
+						};
+						var listener2 = function () {
+							var compHand = comp(gcp);
+							document.querySelector('#num').innerHTML = compHand;
+							winLose('チョキ', compHand);
+						};
+						var listener3 = function () {
+							var compHand = comp(gcp);
+							document.querySelector('#num').innerHTML = compHand;
+							winLose('パー', compHand);
+						};
+
+						gu_btn.addEventListener('click', listener1, false);
+						cho_btn.addEventListener('click', listener2, false);
+						par_btn.addEventListener('click', listener3, false);
+
+						function winLose(x, y) {
+							if (x == y) {
+								document.querySelector('#result').innerHTML = 'あいこ';
+							} else if (x == 'グー') {
+								if (y == 'チョキ') {
+									document.querySelector('#result').innerHTML = '勝ち';
+								} else if ('パー') {
+									document.querySelector('#result').innerHTML = '負け';
+								}
+							} else if (x == 'チョキ') {
+								if (y == 'パー') {
+									document.querySelector('#result').innerHTML = '勝ち';
+								} else if ('グー') {
+									document.querySelector('#result').innerHTML = '負け';
+								}
+							} else if (x == 'パー') {
+								if (y == 'グー') {
+									document.querySelector('#result').innerHTML = '勝ち';
+								} else if ('チョキ') {
+									document.querySelector('#result').innerHTML = '負け';
+								}
+							}
+						}
+					};*/
+	</script>
+</body>
+
+</html>

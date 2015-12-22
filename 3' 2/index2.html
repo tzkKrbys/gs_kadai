@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Untitled Document</title>
+	<meta name="Author" content="" />
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.css">
+
+	<style>
+		/*#links {
+			display: none;
+		}
+		.kijun {
+			display: table;
+			position: relative;
+		}
+		#links a {
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			position: absolute;
+			top: 50%;
+			margin-top: -30px;
+			background-color: rgba(255, 255, 255, 0.3);
+			border: 1px solid rgba(0,0,0,0.05);
+			text-decoration: none;
+			text-align: center;
+			line-height: 60px;
+			font-size: 40px;
+			color: rgba(0,0,0,0.4);
+			font-weight: bold;
+			transition: all .15s ease-in-out;
+		}
+		#links a:first-child {
+			left:10px;
+		}
+		#links a:last-child {
+			right :10px;
+		}
+		#links a:hover {
+			background-color: rgba(255, 255, 255, 0.8);
+		}
+		
+		section {
+			padding: 10px;
+			width: 840px;
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+		
+		#thumbs {
+			height: 70px;
+			overflow: hidden;
+		}
+		
+		#thumbs img {
+			width: 100px;
+			height: 54px;
+			margin: 20px 7px 0 7px;
+			cursor: pointer;
+		}*/
+	</style>
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#thumbs img").one("click", function () {
+				$("#links").show(1000);
+			});
+
+			$("#thumbs img").on("click", function () {
+				console.log("click");
+				var img_scr = $(this).attr("src");
+				var img_alt = $(this).attr("alt");
+				$("#lage_img").attr("src", img_scr).attr("alt", img_alt);
+				$("#select_img").html(img_scr + img_alt);
+			});
+
+			$("#next,#prev").on("click", function () {//next、prevボタンをクリックしたら
+				var elem_id = $(this).attr("id");//elem_id変数にnext、prevボタンのid名を格納
+				var src = $("#lage_img").attr("src");//src変数にlage_img要素のsrc属性値を格納
+				$("#thumbs img").each(function (index, e) {
+					if (src == $(this).attr("src")) {//もしthis(thumbs img)の属性値がlage_img要素のsrc属性値と一致してたら
+						var elem = _link(elem_id, src);//_link関数の返り値(前か次の要素)をelemに格納
+						var img_src = $(elem).attr("src");
+						var img_alt = $(elem).attr("alt");
+						_fade("#lage_img", img_alt, img_src);
+					}
+				});
+			});
+
+			function _link(elem_id, src) {//第一引数はnext、prevボタンのid名、第二引数は表示されていたlage_img要素のsrc属性値
+				if (elem_id == "prev") {
+					console.dir($('#thumbs>img[src="' + src + '"]').prev());
+					if($('img[src="' + src + '"]').prev().attr("src")){
+						return $('#thumbs>img[src="' + src + '"]').prev();
+					}else{
+						
+						return $('#thumbs>img[src="' + src + '"]').nextAll().last();
+					}
+				} else {
+					console.dir($('#thumbs>img[src="' + src + '"]').next());
+					if($('#thumbs>img[src="' + src + '"]').next().attr("src")){
+						return $('#thumbs>img[src="' + src + '"]').next();
+					}else{
+						return $('#thumbs>img[src="' + src + '"]').prevAll().last();
+					}
+				}
+			}
+
+			function _fade(target, alt, src) {
+				$(target).delay(100).css({
+					display: 'block',
+					opacity: '.2'
+				}).attr("alt", alt).attr("src", src).animate({
+					opacity: '1'
+				}, 200);
+			}
+			var isAutoScrolling = false;
+			var timerId;
+			function autoScroll(){
+				var src = $("#lage_img").attr("src");//src変数にlage_img要素のsrc属性値を格納
+				$("#thumbs img").each(function () {
+					if (src == $(this).attr("src")) {//もしthis(thumbs img)の属性値がlage_img要素のsrc属性値と一致してたら
+						var elem = (function(){
+							
+							if($('#thumbs>img[src="' + src + '"]').next().attr("src")){
+								console.log(1111);
+								return $('#thumbs>img[src="' + src + '"]').next();
+							}else{
+								return $('#thumbs>img[src="' + src + '"]').prevAll().last();
+							}
+						})();
+						console.log(elem);
+						var img_src = $(elem).attr("src");
+						var img_alt = $(elem).attr("alt");
+						_fade("#lage_img", img_alt, img_src);
+					}
+				});
+				timerId = setTimeout(autoScroll,3000);
+			}
+			/*autoScroll();*/
+			$("#lage_img").on("click",function(){
+				if(!isAutoScrolling){
+					autoScroll();
+					isAutoScrolling = true;
+				}else if(isAutoScrolling){
+					clearTimeout(timerId);
+					isAutoScrolling = false;
+				}
+				/*autoScroll();*/
+			})
+			/*setTimeout(function(){
+				autoScroll();
+			},1000);*/
+			
+			
+			$(function() {
+				$( ".thumbnails" ).draggable({
+					snap: "#lage_img"
+				});
+				$(".kijun").droppable({
+					accept: ".thumbnails",
+					drop: function(event,ui){
+						console.log(ui);
+						ui.draggable.addClass("autoScrollOK");
+					}
+				});
+				/*$("section").droppable({
+					accept: ".thumbnails",
+					drop: function(event,ui){
+						console.log(ui);
+						ui.draggable.removeClass("autoScrollOK");
+					}
+				});*/
+			});
+			var lage_img = document.querySelector("#lage_img");
+			window.onclick = function(e){
+				var lage_imgX = lage_img.offsetLeft + 200;
+				var lage_imgY = lage_img.offsetTop + 200;
+				var clickX = e.offsetLeft;
+				var clickY = e.offsetTop;
+			}
+			
+			$(document).ready(function(){
+				$(".kijun").on("mousedown",function(e){
+					$("html").on("mousemove",function(e){
+						var cX = e.pageX;
+						var cY = e.pageY;
+						var lage_imgX = $("#lage_img").offset().left + 200;
+						var lage_imgY = $("#lage_img").offset().top + 200;
+						var x = lage_imgX - cX;
+						var y = lage_imgY - cY;
+						/*console.log(x);
+						console.log(y);*/
+						var distance = Math.sqrt(x * x + y * y);
+						/*console.log(distance);*/
+						var radian = -(Math.atan2(x,y));
+						var deg = radian * 180 / Math.PI;
+						console.log(deg);
+						$(".kijun").css("transform","rotate(" + radian + "rad)");
+					});
+					$("html").on("mouseup",function(){
+						$(this).unbind("mousemove");
+					});
+				});
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<header></header>
+	<main>
+		
+		<section>
+			<div class="kijun">
+				<img id="lage_img" src="" alt="">
+				<div id="links">
+					<a id="prev" href="#">＜</a>
+					<a id="next" href="#">＞</a>
+				</div>
+				<div id="thumbs">
+					<img class="thumbnails" src="images/l1.png" alt="1です">
+					<img class="thumbnails" src="images/l2.png" alt="2です">
+					<img class="thumbnails" src="images/l3.png" alt="3です">
+					<img class="thumbnails" src="images/l4.png" alt="4です">
+					<img class="thumbnails" src="images/l5.png" alt="5です">
+					<img class="thumbnails" src="images/l6.png" alt="6です">
+					<img class="thumbnails" src="images/l7.png" alt="7です">
+				</div>
+			</div>
+			
+		</section>
+		<section>
+
+		</section>
+	</main>
+	<footer>フッター（現在選択している画像は<span id="select_img"></span>だよ！）</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Untitled Document</title>
+	<meta name="Author" content="" />
+	<link rel="stylesheet" type="text/css" href="css/main2.css">
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<main>
+		<section>
+			<ul class="navi">
+				<li class="kaiten">kaiten</li>
+				<li class="front clearID">front</li>
+				<li class="back clearID">back</li>
+				<li class="top clearID">top</li>
+				<li class="bottom clearID">bottom</li>
+				<li class="left clearID">left</li>
+				<li class="right clearID">right</li>
+			</ul>
+			<ul class="thumbsRight">
+				<li class="front_SacreCoeur clearID"><span>FR</span></li>
+				<li class="back_Versailles00 clearID"><span>BC</span></li>
+				<li class="top_Louvre clearID"><span>TP</span></li>
+				<li class="bottom_montmartre clearID"><span>BT</span></li>
+				<li class="left_Versailles02 clearID"><span>LF</span></li>
+				<li class="right_Versailles01 clearID"><span>RT</span></li>
+			</ul>
+			<div class="stage">
+				<div id="cube" class="init">
+					<div class="pict side_bottom"></div>
+					<div class="pict side_top"></div>
+					<div class="pict side_back"></div>
+					<div class="pict side_right"></div>
+					<div class="pict side_left"></div>
+					<div class="pict side_front"><img id="lage_img" src="" alt="" width="400" height="400"></div>
+				</div>
+			</div>
+			<div id="prevNextBtn">
+				<a id="prev" href="#">＜＜</a>
+				<a id="next" href="#">＞＞</a>
+			</div>
+			<div id="thumbsLeft">
+				<img class="thumbnails" src="images/l1.png" alt="1です">
+				<img class="thumbnails" src="images/l2.png" alt="2です">
+				<img class="thumbnails" src="images/l3.png" alt="3です">
+				<img class="thumbnails" src="images/l4.png" alt="4です">
+				<img class="thumbnails" src="images/l5.png" alt="5です">
+				<img class="thumbnails" src="images/l6.png" alt="6です">
+				<img class="thumbnails" src="images/l7.png" alt="7です">
+			</div>
+			<div id="randomBtn">Random</div>
+			<div id="rollBtn">Roll</div>
+		</section>
+	</main>
+
+
+	<script>
+		var rollingIntervalID;
+	$(document).ready(function(){
+		$("#cube").css("transform-origin","200px 200px -1000px");
+		setTimeout(function(){
+			$("#cube").toggleClass("init").toggleClass("rollingFor");
+		},500);
+		function rollCube(){
+			rollingIntervalID = setInterval(function(){
+				$("#cube").toggleClass("rollingFor").toggleClass("rollingRev");
+
+			},30000);
+		}
+		rollCube();
+		
+		
+		
+		
+		$(".kaiten").on("click",function(){
+			$("#cube").removeClass();
+			setTimeout(function(){
+				$("#cube").toggleClass("rollingFor");
+				rollCube();
+			},2100);
+		});
+		
+		$("#cube, #rollBtn").on("click",function(){
+			$("#cube").removeClass();
+			setTimeout(function(){
+				$("#cube").toggleClass("rollingFor");
+				rollCube();
+			},2100);
+		});
+		
+		$(".clearID").on("click",function(){
+			clearInterval(rollingIntervalID);
+		});
+		
+		$(".front").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+		});
+		$(".back").on("click",function(){
+			$("#cube").removeClass().addClass("back");
+		});
+		$(".top").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+		});
+		$(".bottom").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+		});
+		$(".left").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+		});
+		$(".right").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+		});
+
+
+
+		$(".front_SacreCoeur").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+			$("body").css("background-image", "url(../images/ChampsElysees.jpg)");
+		});
+		$(".back_Versailles00").on("click",function(){
+			$("body").css("background-image", "url(../images/Versailles00.jpg)");
+			$("#cube").removeClass();
+			setTimeout(function(){
+				$("#cube").removeClass().addClass("back");
+			},2000);
+		});
+		$(".top_Louvre").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+			$("body").css("background-image", "url(../images/Louvre.jpg)");
+		});
+		$(".bottom_montmartre").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+			$("body").css("background-image", "url(../images/montmartre.jpg)");
+		});
+		$(".left_Versailles02").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+			$("body").css("background-image", "url(../images/Versailles02.jpg)");
+		});
+		$(".right_Versailles01").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+			$("body").css("background-image", "url(../images/Versailles01.jpg)");
+		});
+
+
+		
+/*		$(".front_SacreCoeur").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+			$("body").css("background-image", "url(../images/ChampsElysees.jpg)");
+		});
+		$(".back_Versailles00").on("click",function(){
+			$("#cube").removeClass().addClass("back");
+			$("body").css("background-image", "url(../images/Versailles00.jpg)");
+		});
+		$(".top_Louvre").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+			$("body").css("background-image", "url(../images/Louvre.jpg)");
+		});
+		$(".bottom_montmartre").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+			$("body").css("background-image", "url(../images/montmartre.jpg)");
+		});
+		$(".left_Versailles02").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+			$("body").css("background-image", "url(../images/Versailles02.jpg)");
+		});
+		$(".right_Versailles01").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+			$("body").css("background-image", "url(../images/Versailles01.jpg)");
+		});*/
+
+
+		$("#thumbsLeft img").on("click", function () {
+			console.log("click"); //this or event の確認
+			var img_src = $(this).attr("src");
+			var img_alt = $(this).attr("alt");
+			$("#lage_img").attr("src", img_src).attr("alt", img_alt);
+			$("#select_img").html(img_src + img_alt);
+		});
+		
+		//リンク画像切り替え
+		/*$("#next,#prev").on("click", function () {
+			var elem_id = $(this).attr("id");
+			var src = $("#lage_img").attr("src");
+			$("#thumbsLeft img").each(function (index, e) {
+				console.log($("#thumbsLeft img").attr("src"));
+				console.log(src);
+				if (src == $(this).attr("src")) {
+					var elem = _link(elem_id, src);
+					var img_src = $(elem).attr("src");
+					var img_alt = $(elem).attr("alt");
+					_fade("#lage_img", img_alt, img_src); //Add
+				}
+			});
+		});*/
+		
+		$("#next,#prev").on("click", function () {//next、prevボタンをクリックしたら
+			var elem_id = $(this).attr("id");//elem_id変数にnext、prevボタンのid名を格納
+			var src = $("#lage_img").attr("src");//src変数にlage_img要素のsrc属性値を格納
+			$("#thumbsLeft img").each(function (index, e) {
+				if (src == $(this).attr("src")) {//もしthis(thumbs img)の属性値がlage_img要素のsrc属性値と一致してたら
+					var elem = _link(elem_id, src);//_link関数の返り値(前か次の要素)をelemに格納
+					var img_src = $(elem).attr("src");
+					var img_alt = $(elem).attr("alt");
+					_fade("#lage_img", img_alt, img_src);
+				}
+			});
+		});
+		
+		//リンク切替処理
+		/*function _link(elem_id, src) {
+			if (elem_id == "prev") {
+				return $('img[src="' + src + '"]').prev();
+			} else {
+				return $('img[src="' + src + '"]').next();
+			}
+		}*/
+		
+		function _link(elem_id, src) {//第一引数はnext、prevボタンのid名、第二引数は表示されていたlage_img要素のsrc属性値
+			if (elem_id == "prev") {
+				console.dir($('#thumbsLeft>img[src="' + src + '"]').prev());
+				if($('img[src="' + src + '"]').prev().attr("src")){
+					return $('#thumbsLeft>img[src="' + src + '"]').prev();
+				}else{
+
+					return $('#thumbsLeft>img[src="' + src + '"]').nextAll().last();
+				}
+			} else {
+				console.dir($('#thumbsLeft>img[src="' + src + '"]').next());
+				if($('#thumbsLeft>img[src="' + src + '"]').next().attr("src")){
+					return $('#thumbsLeft>img[src="' + src + '"]').next();
+				}else{
+					return $('#thumbsLeft>img[src="' + src + '"]').prevAll().last();
+				}
+			}
+		}
+		
+		
+		//フェード処理//Add
+		function _fade(target, alt, src) {
+			$(target).delay(100).css({
+				display: 'block',
+				opacity: '.2'
+			}).attr("alt", alt).attr("src", src).animate({
+				opacity: '1'
+			}, 200);
+		}
+		
+		
+		
+		var isAutoScrolling = false;
+		var timerId;
+		function autoScroll(){
+			var src = $("#lage_img").attr("src");//src変数にlage_img要素のsrc属性値を格納
+			$("#thumbsLeft img").each(function () {
+				if (src == $(this).attr("src")) {//もしthis(thumbs img)の属性値がlage_img要素のsrc属性値と一致してたら
+					var elem = (function(){
+
+						if($('#thumbsLeft>img[src="' + src + '"]').next().attr("src")){
+							console.log(1111);
+							return $('#thumbsLeft>img[src="' + src + '"]').next();
+						}else{
+							return $('#thumbsLeft>img[src="' + src + '"]').prevAll().last();
+						}
+					})();
+					console.log(elem);
+					var img_src = $(elem).attr("src");
+					var img_alt = $(elem).attr("alt");
+					_fade("#lage_img", img_alt, img_src);
+				}
+			});
+			timerId = setTimeout(autoScroll,3000);
+		}
+		/*autoScroll();*/
+		$("#randomBtn").on("click",function(){
+			console.log(isAutoScrolling);
+			if(!isAutoScrolling){
+				autoScroll();
+				isAutoScrolling = true;
+			}else if(isAutoScrolling){
+				clearTimeout(timerId);
+				isAutoScrolling = false;
+			}
+			/*autoScroll();*/
+		});
+		
+		/*$("#thumbsLeft img").on("click", function () {
+			var img_scr = $(this).attr("src");
+			var img_alt = $(this).attr("alt");
+			$("#lage_img").css("background-image", "url(" + img_scr + ")").attr("alt", img_alt);
+			$("#select_img").html(img_scr + img_alt);
+		});*/
+
+	});
+	</script>
+</body>
+
+</html>

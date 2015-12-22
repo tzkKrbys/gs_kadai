@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="sample.css">
+	<title>じゃんけん</title>
+	<script>
+		window.onload = function () {
+			//ここにJSを記述
+			var gcp = ['グー', 'チョキ', 'パー'];
+			var num = document.querySelector('#num');
+
+			function comp(arr) {
+				var randNum = Math.floor(Math.random() * gcp.length);
+				return arr[randNum];
+			}
+
+			var gu_btn = document.querySelector('#gu_btn');
+			var cho_btn = document.querySelector('#cho_btn');
+			var par_btn = document.querySelector('#par_btn');
+
+			var listener1 = function () {
+				var compHand = comp(gcp);
+				document.querySelector('#num').innerHTML = compHand;
+				winLose('グー', compHand);
+			};
+			var listener2 = function () {
+				var compHand = comp(gcp);
+				document.querySelector('#num').innerHTML = compHand;
+				winLose('チョキ', compHand);
+			};
+			var listener3 = function () {
+				var compHand = comp(gcp);
+				document.querySelector('#num').innerHTML = compHand;
+				winLose('パー', compHand);
+			};
+
+			gu_btn.addEventListener('click', listener1, false);
+			cho_btn.addEventListener('click', listener2, false);
+			par_btn.addEventListener('click', listener3, false);
+
+			function winLose(x, y) {
+				if (x == y) {
+					document.querySelector('#result').innerHTML = 'あいこ';
+				} else if (x == 'グー') {
+					if (y == 'チョキ') {
+						document.querySelector('#result').innerHTML = '勝ち';
+					} else if ('パー') {
+						document.querySelector('#result').innerHTML = '負け';
+					}
+				} else if (x == 'チョキ') {
+					if (y == 'パー') {
+						document.querySelector('#result').innerHTML = '勝ち';
+					} else if ('グー') {
+						document.querySelector('#result').innerHTML = '負け';
+					}
+				} else if (x == 'パー') {
+					if (y == 'グー') {
+						document.querySelector('#result').innerHTML = '勝ち';
+					} else if ('チョキ') {
+						document.querySelector('#result').innerHTML = '負け';
+					}
+				}
+			}
+		};
+	</script>
+</head>
+
+<body>
+
+	<header>
+		<h1>じゃんけん</h1>
+	</header>
+
+	<main>
+		<ul>
+			<li id="gu_btn">グー</li>
+			<li id="cho_btn">チョキ</li>
+			<li id="par_btn">パー</li>
+		</ul>
+		<div id="pc">コンピュータの出した手は？</div>
+		<div id="num">ここに表示されます</div>
+		<div id="winLose">勝敗は？</div>
+		<div id="result">ここに表示されます</div>
+	</main>
+
+	<footer></footer>
+
+</body>
+
+</html>

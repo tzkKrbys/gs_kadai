@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>sample2.html</title>
+	<style>
+		section {
+			padding: 10px;
+			width: 840px;
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+		
+		#thumbs {
+			height: 70px;
+			overflow: hidden;
+		}
+		
+		#thumbs img {
+			width: 100px;
+			height: 54px;
+			margin: 20px 7px 0 7px;
+			cursor: pointer;
+		}
+		
+		#thumbs img.selected {
+			opacity: 0.8;
+			alpha(opacity=80);
+		}
+		
+		#links {
+			display: none;
+			background: #fff
+		}
+	</style>
+
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script>
+		$(document).ready(function () {
+
+			//最初に画像表示したときの処理
+			$("#thumbs img").one("click", function () {
+				$("#links").show(1000); //1秒掛けて表示
+			});
+
+			//クリック処理
+			$("#thumbs img").on("click", function () {
+				console.log("click"); //this or event の確認
+				var img_src = $(this).attr("src");
+				var img_alt = $(this).attr("alt");
+				$("#lage_img").attr("src", img_src).attr("alt", img_alt);
+				$("#select_img").html(img_src + img_alt);
+			});
+
+			//リンク画像切り替え
+			$("#next,#prev").on("click", function () {
+				var elem_id = $(this).attr("id");
+				var src = $("#lage_img").attr("src");
+				$("#thumbs img").each(function (index, e) {
+					if (src == $(this).attr("src")) {
+						var elem = _link(elem_id, src);
+						var img_src = $(elem).attr("src");
+						var img_alt = $(elem).attr("alt");
+						_fade("#lage_img", img_alt, img_src); //Add
+					}
+				});
+			});
+
+			//リンク切替処理
+			function _link(elem_id, src) {
+				if (elem_id == "prev") {
+					return $('img[src="' + src + '"]').prev();
+				} else {
+					return $('img[src="' + src + '"]').next();
+				}
+			}
+
+			//フェード処理//Add
+			function _fade(target, alt, src) {
+				$(target).delay(100).css({
+					display: 'block',
+					opacity: '.2'
+				}).attr("alt", alt).attr("src", src).animate({
+					opacity: '1'
+				}, 200);
+			}
+
+		});
+	</script>
+</head>
+
+<body>
+	<header>Image Panel</header>
+	<main>
+
+		<section>
+			<div>
+				<img id="lage_img" src="" alt="">
+			</div>
+			<div id="thumbs">
+				<img src="img/l1.png" alt="1だよ">
+				<img src="img/l2.png" alt="2だよ">
+				<img src="img/l3.png" alt="3だよ">
+				<img src="img/l4.png" alt="4だよ">
+				<img src="img/l5.png" alt="5だよ">
+				<img src="img/l6.png" alt="6だよ">
+				<img src="img/l7.png" alt="7だよ">
+			</div>
+		</section>
+		<section>
+			<div id="links">
+				<a id="prev" href="#">＜＜</a>
+				<a id="next" href="#">＞＞</a>
+			</div>
+		</section>
+	</main>
+
+	<footer>フッター［現在選択してる画像は：<span id="select_img"></span>］</footer>
+
+</body>
+
+</html>

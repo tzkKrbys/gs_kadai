@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<script>
+  $(document).ready(function () {
+    //var elem = '<a href="#">次ページ</a>';
+    //$("#id").html(elem);
+    //$("#id").text(elem);
+    //$("#id").css("color","#ffff00");
+    //$("#id").show(4000);      //hide
+    //$("#id").prepend(elem);   //要素の先頭にHTML要素を追加
+    //$("#id").append(elem);    //要素の最後にHTML要素を追加
+    //$("#emp").empty();         //子要素を全て削除
+    //$("#emp").remove();        //要素を全て削除
+
+
+    /* CSS */
+    /*
+        //１つのセレクタに対して複数のスタイルを指定（記述方法１）
+      $("#emp").css("color", "#f00");
+      $("#emp").css ("background-color", "#fff");
+      $("#emp").css ("border", "1px solid #555");
+
+        //１つのセレクタに対して複数のスタイルを指定（記述方法２）
+      $("#emp").css({
+          "color" : "#f00",
+          "background-color" : "#fff",
+          "border" : "1px solid #555"
+      });
+    */
+  });
+</script>
+</head>
+<body>
+  <div id="id"></div>
+  <div id="emp">ー要素ー<span>子要素</span></div>
+</body>
+</html>

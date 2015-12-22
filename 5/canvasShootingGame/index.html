@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+	<meta charset="utf-8">
+		<script src="js/common.js"></script>
+		<script src="js/character.js"></script>
+		<script src="js/boss.js"></script>
+		<script src="js/main.js"></script>
+		<title>canvasシューティングゲーム</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			canvas {
+				border: 1px solid gray;
+				background: #000;
+			}
+		</style>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+									})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-62806102-2', 'auto');
+			ga('send', 'pageview');
+
+		</script>
+	</head>
+	<audio src="audio/haretahiniSiranaibasyoheiku.m4a" preload="auto" id="hareta"></audio>
+	<audio src="audio/small_explosion1.mp3" preload="auto" id="explosion"></audio>
+	<audio src="audio/explosion2.mp3" preload="auto" id="explosion2"></audio>
+	<audio src="audio/bomb.mp3" preload="auto" id="bomb"></audio>
+	<audio src="audio/shot_struck1.mp3" preload="auto" id="shot_struck1"></audio>
+	<audio src="audio/shoot.mp3" preload="auto" id="shoot"></audio>
+	<audio src="audio/ff4_09_fanfare_short.mp3" preload="auto" id="ff4_09_fanfare"></audio>
+	<audio src="audio/pi00.mp3" preload="auto" id="pi00"></audio>
+	<audio src="audio/pico00.mp3" preload="auto" id="pico00"></audio>
+	<audio src="audio/buin00.mp3" preload="auto" id="buin00"></audio>
+	<body>
+		<canvas id="screenCanvas"></canvas>
+		<!--<p id="info"></p>-->
+		
+	</body>
+</html>

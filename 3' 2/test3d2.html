@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Untitled Document</title>
+	<meta name="Author" content="" />
+	<link rel="stylesheet" type="text/css" href="css/test3d2.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<main>
+		<section>
+			<ul class="navi">
+				<li class="kaiten">kaiten</li>
+				<li class="front">front</li>
+				<li class="back">back</li>
+				<li class="top">top</li>
+				<li class="bottom">bottom</li>
+				<li class="left">left</li>
+				<li class="right">right</li>
+			</ul>
+			<ul class="thumb">
+				<li class="random">random</li>
+				<li class="front_SacreCoeur"></li>
+				<li class="back_Versailles00"></li>
+				<li class="top_Louvre"></li>
+				<li class="bottom_montmartre"></li>
+				<li class="left_Versailles02"></li>
+				<li class="right_Versailles01"></li>
+			</ul>
+			<div class="stage">
+				<div id="cube" class="init">
+					<div class="pict side_bottom">BOTTOM</div>
+					<div class="pict side_top">TOP</div>
+					<div class="pict side_back">BACK</div>
+					<div class="pict side_right">RIGHT</div>
+					<div class="pict side_left">LEFT</div>
+					<div class="pict side_front">FRONT</div>
+				</div>
+			</div>
+		</section>
+		
+	</main>
+
+
+	<script>
+	$(document).ready(function(){
+		$(".kaiten").on("click",function(){
+			$("#cube").removeClass().addClass("smallSize");
+			setTimeout(function(){
+				/*$("#cube").removeClass().addClass("move");*/
+				$("#cube").toggleClass("move");
+			},2000);
+			
+			/*$("#cube").removeClass().addClass("rollingCube");*/
+			/*$("#cube").removeClass();*/
+		});
+		$(".front").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+		});
+		$(".back").on("click",function(){
+			$("#cube").removeClass("rollingCube").addClass("stoppingCube");
+			setTimeout(function(){
+				$("#cube").removeClass().addClass("back");
+			},1000);
+			$(".cube").removeClass().addClass("cube back");
+		});
+		$(".top").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+		});
+		$(".bottom").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+		});
+		$(".left").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+			/*$(".side_left").css("transform","rotateY(-90deg) scale(2)");*/
+		});
+		$(".right").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+		});
+		
+		/*$("#cube").on("click",function(){
+			$("#cube").animate({
+				transform: "rotateY(270deg)"
+			});
+		});*/
+			
+		
+	});
+	</script>
+</body>
+
+</html>

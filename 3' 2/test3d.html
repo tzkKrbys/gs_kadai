@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Untitled Document</title>
+	<meta name="Author" content="" />
+	<link rel="stylesheet" type="text/css" href="css/test3d.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<style>
+		ul {
+			display: table;
+		}
+		ul li {
+			display: table-cell;
+			width: 100px;
+			text-align: center;
+			border-left: 1px solid #000;
+		}
+		ul li:last-child {
+			border-right: 1px solid #000;
+		}
+	</style>
+</head>
+
+<body>
+	<main>
+		<section>
+			<ul>
+				<li class="kaiten">kaiten</li>
+				<li class="front">front</li>
+				<li class="back">back</li>
+				<li class="top">top</li>
+				<li class="bottom">bottom</li>
+				<li class="left">left</li>
+				<li class="right">right</li>
+			</ul>
+			<div class="stage">
+				<div id="cube" class="rollingCube">
+					<div class="side_bottom">BOTTOM</div>
+					<div class="side_top">TOP</div>
+					<div class="side_back">BACK</div>
+					<div class="side_right">RIGHT</div>
+					<div class="side_left">LEFT</div>
+					<div class="side_front">FRONT</div>
+				</div>
+			</div>
+		</section>
+		
+	</main>
+
+
+	<script>
+	$(document).ready(function(){
+		$(".kaiten").on("click",function(){
+			$("#cube").removeClass()/*.addClass("rollingCube")*/;
+		});
+		$(".front").on("click",function(){
+			$("#cube").removeClass().addClass("front");
+		});
+		$(".back").on("click",function(){
+			$("#cube").removeClass("rollingCube").addClass("stoppingCube");
+			setTimeout(function(){
+				$("#cube").removeClass().addClass("back");
+			},1000);
+			$(".cube").removeClass().addClass("cube back");
+		});
+		$(".top").on("click",function(){
+			$("#cube").removeClass().addClass("top");
+		});
+		$(".bottom").on("click",function(){
+			$("#cube").removeClass().addClass("bottom");
+		});
+		$(".left").on("click",function(){
+			$("#cube").removeClass().addClass("left");
+			/*$(".side_left").css("transform","rotateY(-90deg) scale(2)");*/
+		});
+		$(".right").on("click",function(){
+			$("#cube").removeClass().addClass("right");
+		});
+		
+	});
+	</script>
+</body>
+
+</html>

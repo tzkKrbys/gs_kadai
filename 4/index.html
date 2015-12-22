@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>課題</title>
+	<style>
+	</style>
+	<link rel="stylesheet" href="css/sample.css">
+
+	<script src="http://maps.googleapis.com/maps/api/js? sensor=false"></script>􏰀
+	<!--<script src="js/jquery-2.1.3.min.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script src="js/jquery.easing.1.3.js"></script>
+
+
+	<script>
+		$(document).ready(function () {
+			//この中に処理を記述 開始
+			var lat, lon;
+
+			if (navigator.geolocation) {
+				// 現在の位置情報取得を実施
+				navigator.geolocation.getCurrentPosition(
+					// 位置情報取得成功時
+					function (pos) {
+						var location = "<li>" + "緯度：" + pos.coords.latitude + "</li>";
+						location += "<li>" + "経度：" + pos.coords.longitude + "</li>";
+						document.getElementById("location").innerHTML = location;
+						lat = pos.coords.latitude;
+						lon = pos.coords.longitude;
+						setMarker(lat, lon);
+					},
+					// 位置情報取得失敗時
+					function (error) {
+						var message = "";
+						switch (error.code) {
+							// 位置情報取得できない場合
+						case error.POSITION_UNAVAILABLE:
+							message = "位置情報の取得ができませんでした。";
+							break;
+							// Geolocation使用許可されない場合
+						case error.PERMISSION_DENIED:
+							message = "位置情報取得の使用許可がされませんでした。";
+							break;
+							// タイムアウトした場合 
+						case error.PERMISSION_DENIED_TIMEOUT:
+							message = "位置情報取得中にタイムアウトしました。";
+							break;
+						}
+						window.alert(message);
+					});
+			} else {
+				window.alert("本ブラウザではGeolocationが使えません");
+			}
+
+			// 地図を表示
+			map = new google.maps.Map(
+				document.getElementById("gmap"), {
+					zoom: 15,
+					center: new google.maps.LatLng(0, 0),
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				}
+			);
+
+			// マーカーを表示
+			marker = new google.maps.Marker({
+				position: new google.maps.LatLng(0, 0),
+				map: map,
+				/*icon:"images/pagu.jpg"*/
+				/*icon: new google.maps.MarkerImage(
+				'images/pagu.jpg',// url
+				new google.maps.Size(31,31),// size
+				new google.maps.Point(0,0),// origin
+				new google.maps.Point(16,16)// anchor
+				)*/
+			});
+			
+
+			//googleMAPの更新
+			function setMarker(lat, lon) {
+				var pos = new google.maps.LatLng(lat, lon);
+				map.setCenter(pos);
+				marker.setPosition(pos);
+			}
+
+			$("#btn").on("click", function (lat, lon) {
+				/*localStorage.setItem("lat",lat);
+				localStorage.setItem("lon",lon);*/
+				var lat2 = parseFloat($("#latitude").val(), 10);
+				var lon2 = parseFloat($("#longitude").val(), 10);
+				var location2 = "<li>" + "緯度：" + lat2 + "</li>";
+				location2 += "<li>" + "経度：" + lon2 + "</li>";
+				$("#location").html(location2);
+				setMarker(lat2, lon2);
+				localStorage.setItem("lat", lat2);
+				localStorage.setItem("lon", lon2);
+			});
+			$("#btnPrev").on("click", function () {
+				var latPrev = localStorage.getItem("lat");
+				var lonPrev = localStorage.getItem("lon");
+				var locationPrev = "<li>" + "緯度：" + latPrev + "</li>";
+				locationPrev += "<li>" + "経度：" + lonPrev + "</li>";
+				$("#location").html(locationPrev);
+				setMarker(latPrev, lonPrev);
+			});
+
+			function latlonKensaku(lat, lon) {
+				var location = "<li>" + "緯度：" + lat + "</li>";
+				location += "<li>" + "経度：" + lon + "</li>";
+				$("#location").html(location);
+				setMarker(lat, lon);
+				localStorage.setItem("lat", lat);
+				localStorage.setItem("lon", lon);
+			}
+
+
+
+
+			function codeAddress(address) {
+				// google.maps.Geocoder()コンストラクタのインスタンスを生成
+				var geocoder = new google.maps.Geocoder();
+				// 地図表示に関するオプション
+				/*var mapOptions = {
+					zoom: 18,
+					mapTypeId: google.maps.MapTypeId.ROADMAP*/
+				// マウスホイールによるズーム操作を無効
+				/*scrollwheel: false*/
+				/*};*/
+				// 地図を表示させるインスタンスを生成
+				/*var map = new google.maps.Map(document.getElementById("gmap"), mapOptions);*/
+				// geocoder.geocode()メソッドを実行
+				geocoder.geocode({
+					'address': address
+				}, function (results, status) {
+					// ジオコーディングが成功した場合
+					/*var keyword = results[0].address_components[0].long_name;
+					console.log(results[0].formatted_address);//住所
+					var formatted_address = results[0].formatted_address;
+					console.log(results[0].geometry.location.A);//緯度
+					var lat = results[0].geometry.location.A;//緯度
+					console.log(results[0].geometry.location.F);//経度
+					var lon = results[0].geometry.location.F;//経度
+					console.log(results[0].geometry.location);
+					var placeDataList = {
+						keyword:keyword,
+						address:formatted_address,
+						lat:lat,
+						lon:lon
+					};
+					console.log(placeDataList);*/
+					if (JSON.parse(localStorage.getItem("placeDataList"))) {
+						placeDataList = JSON.parse(localStorage.getItem("placeDataList"));
+					} else {
+						var placeDataList = [];
+					}
+
+					placeDataList.unshift(results);
+					/*console.log(JSON.stringify(results));*/
+					localStorage.setItem("placeDataList", JSON.stringify(placeDataList));
+
+					if (status == google.maps.GeocoderStatus.OK) {
+						// google.maps.Map()コンストラクタに定義されているsetCenter()メソッドで
+						// 変換した緯度・経度情報を地図の中心に表示
+						map.setCenter(results[0].geometry.location);
+						// 地図上に目印となるマーカーを設定います。
+						// google.maps.Marker()コンストラクタにマーカーを設置するMapオブジェクトと
+						// 変換した緯度・経度情報を渡してインスタンスを生成
+						// →マーカー詳細
+						var marker = new google.maps.Marker({
+							map: map,
+							position: results[0].geometry.location
+						});
+
+						hyouji(results)
+							// ジオコーディングが成功しなかった場合
+					} else {
+						console.log('Geocode was not successful for the following reason: ' + status);
+					}
+				});
+			}
+
+
+
+
+			//ロード時にlocalStorageのデータを読み込む
+			var placeDataList = JSON.parse(localStorage.getItem("placeDataList"));
+			console.log(placeDataList);
+			if (placeDataList) {
+				for (var i = placeDataList.length - 1; i >= 0; i--) {
+					hyouji(placeDataList[i]);
+				}
+			}
+			/*addOpacity();*/
+
+
+
+
+
+
+
+			function serchAddress() {
+					// フォームに入力された住所情報を取得
+					var address = document.getElementById("address").value;
+					// 取得した住所を引数に指定してcodeAddress()関数を実行
+					codeAddress(address);
+				}
+				// ボタンに指定したid要素を取得
+			var button = document.getElementById("button");
+			// ボタンが押された時の処理
+			button.onclick = serchAddress;
+
+			$("input").on("keydown", function (e) {
+				if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+					serchAddress();
+					$('#address').val('');
+					return false;
+				} else {
+					return true;
+				}
+			});
+
+
+
+			function hyouji(results) {
+				if (results) {
+					var lat = results[0].geometry.location.A;
+					var lon = results[0].geometry.location.F;
+					var location = "<li>" + "緯度：" + lat + "</li>";
+					location += "<li>" + "経度：" + lon + "</li>";
+					$("#location").html(location);
+					var keyword = results[0].address_components[0].long_name;
+					var address = results[0].formatted_address;
+					var info = '<div class="rireki">' + keyword + "<br>" + address + "<br>緯度：<span>" + lat + "</span>経度：<span>" + lon + "</span></div>";
+					$("#historicalData").prepend(info);
+					addDragEvent();
+					/*addOpacity();*/
+				}
+			}
+
+
+			$("#historicalData").on("click", "div", function () {
+				var lat = $(this).children('span:first').text();
+				var lon = $(this).children('span:last').text();
+				latlonKensaku(lat, lon);
+			});
+
+			$('#historicalData div').on("dblclick", function () {
+				var index = $('#historicalData div').index(this);
+				console.log(index);
+				console.log(placeDataList);
+				console.log(placeDataList[index]);
+				placeDataList.splice(index, 1);
+				$(this).remove();
+				localStorage.setItem("placeDataList", JSON.stringify(placeDataList));
+			});
+			function localStorageDataKousin(index) {
+				console.log(index);
+				console.log(placeDataList);
+				console.log(placeDataList[index]);
+				placeDataList.splice(index, 1);
+				$(this).remove();
+				localStorage.setItem("placeDataList", JSON.stringify(placeDataList));
+			};
+
+			function addDragEvent(){
+				$('#historicalData div').draggable({
+					axis: "x",
+					opacity:false,
+					/*grid: [ 250, 0 ],
+				/*revert: true,*/
+					stop: function(event, ui){
+						console.log($(this).position().left);
+						if(ui.position.left > -100 && ui.position.left < 100){
+							/*$(this).position().left = 0;*/
+							console.log($(this).position().left);
+							$(this).position().left = 0;
+							console.log($(this).css("left"));
+							/*$(this).css("left",0);*/
+							$(this).animate({left:0},200,"easeOutQuart");
+							$(this).css("opacity", "");
+						}
+						if(ui.position.left <= -100 || ui.position.left >= 100){
+							$(this).animate({opacity:0},100,"linear");
+							if(ui.position.left <= -100){
+								$(this).animate({left:"-=200px"},200,"easeOutQuart");
+							}else{
+								$(this).animate({left:"+=200px"},200,"easeOutQuart");
+							}
+							var index = $('#historicalData div').index(this);
+							localStorageDataKousin(index);
+							var th = $(this);
+							setTimeout(function(){
+								$(th).remove();
+								console.log(th);
+							},600);
+						}
+					},
+					drag: function (event, ui) {
+						console.log(ui.position.left);
+						$(this).css("opacity", 1 + ui.position.left / 200);
+						console.log(event);
+					}
+				});
+			}
+			addDragEvent();
+			
+			/*$('#historicalData').droppable({
+				accept: 'section',
+				drop: function (event, ui) {
+					alert();
+				}
+			});*/
+			$('#historicalData div').disableSelection();
+			
+			function addOpacity(){
+				/*$("#historicalData div").css("opacity",0.3);*/
+				$("#historicalData div") .hover(function(){
+					$(this).fadeTo("200",1,"easeInOutCubic");
+				},function(){
+					$(this).fadeTo("200",0.3,"easeInOutCubic");
+				});
+			}
+
+			$('#address')
+				.focus(function(){
+				$(this).select();
+			})
+				.click(function(){
+				$(this).select();
+				return false;
+			});
+			
+			//この中に処理を記述 終了
+		});
+	</script>
+</head>
+
+<body>
+
+	<header>
+		<h1>お気に入りの場所を紹介</h1>
+		<p id="info">
+			緯度：
+			<input id="latitude" size="20" type="text" name="" /> 経度：
+			<input id="longitude" size="20" type="text" name="" />
+			<input id="btn" type="button" value="登録">
+			<input id="btnPrev" type="button" value="前回表示場所">
+		</p>
+	</header>
+
+	<main>
+		<section id="main">
+			<ul id="location"></ul>
+			<p>
+				<form id="addressSerch">キーワード検索
+					<input type="text" value="東京スカイツリー" id="address">
+					<input type="button" value="地図検索" id="button">
+				</form>
+			</p>
+			<div id="gmap"></div>
+			<div id="historicalData">
+				<!--<div class="rireki">明治神宮<br>
+				日本, 〒151-8557 東京都渋谷区代々木神園町１−１ 明治神宮<br>
+				緯度：<span>35.6763976</span> 経度：<span>139.69932589999996</span></div>
+			<div class="rireki">表参道駅<br>
+				日本, 表参道駅（東京）<br>
+				緯度：<span>35.665247</span> 経度：<span>139.712314</span></div>-->
+			</div>
+		</section>
+	</main>
+
+	<footer></footer>
+
+</body>
+
+</html>

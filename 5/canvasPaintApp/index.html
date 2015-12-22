@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>canvas.html</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			-o-user-select: none;
+		}
+		
+		body {
+			background: #e9ddff;
+			font-size: 10px;
+		}
+		
+		section {
+			padding-top: 10px;
+			padding-left: 5px;
+		}
+		
+		nav {
+			float: left;
+			padding-left: 10px;
+		}
+		
+		h1 {
+			border: 4px solid #ccc;
+			border-radius: 10px;
+			text-align: center;
+		}
+		
+		canvas {
+			float: left;
+			background: #fff;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+		
+		#drowarea {
+			cursor: crosshair;
+			margin-left: 20px;
+		}
+		
+		#sizeWaku {
+			width: 110px;
+			height: 110px;
+			position: relative;
+			box-shadow: 1px 1px 5px rgba(0, 0, 0, .5) inset;
+			background: url(images/kami.jpg);
+			background-size: cover;
+			border-radius: 5px;
+		}
+		
+		#sizeSample {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 50px;
+			height: 50px;
+			/*border:1px solid #000;*/
+			
+			box-shadow: 2px 2px 6px rgba(0, 0, 0, .8);
+			display: inline-block;
+			background: #000;
+			border-radius: 50%;
+		}
+		
+		#fontSizeSample {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			text-shadow: 2px 2px 6px rgba(0, 0, 0, .8);
+			display: inline-block;
+			vertical-align: middle;
+			font-size: 20px;
+			line-height: 20px;
+			margin-top: -10px;
+			margin-left: -10px;
+		}
+		textarea#text {
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			padding: 3px;
+		}
+		
+		.thumbnail {
+			border: 1px solid #ccc;
+			background-color: #fff;
+		}
+		
+		.thumbnail:before {
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			top: 0;
+			right: 0;
+			background-color: #f00;
+		}
+		
+		.clearfix:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+		
+		#gallary {
+			position: fixed;
+			top: 5px;
+			right: 0;
+			padding: 10px;
+			border: 1px solid #ccc;
+			width: 130px;
+			height: 600px;
+			overflow: auto;
+			border-radius: 5px;
+			background-color: #aaf;
+			margin-right: 5px;
+			margin-top: 5px;
+		}
+		
+		#gallary>a {
+			display: block;
+			position: relative;
+			margin-top: 5px;
+		}
+		/*		#gallary>a:before {
+			text-align: center;
+			line-height: 20px;
+			color: #fff;
+			content: "-";
+			position: absolute;
+			display: block;
+			top: -10px;
+			right: -10px;
+			width: 20px;
+			height: 20px;
+			background: #f00;
+			z-index: 10;
+			border-radius: 50%;
+			border: 1px solid #000;
+		}*/
+		
+		#colorTable {
+			border-collapse: collapse;
+		}
+		
+		#colorTable td {
+			border: 1px solid #ccc;
+			width: 20px;
+			height: 20px;
+		}
+		.color01 {
+			background-color: #000;
+		}
+		.color02 {
+			background-color: #fff;
+		}
+		.color03 {
+			background-color: #00f;
+		}
+		.color04 {
+			background-color: #73FCD6;
+		}
+		.color05 {
+			background-color: #76D6FF;
+		}
+		.color06 {
+			background-color: #D783FF;
+		}
+		.color07 {
+			background-color: #FF74D9;
+		}
+		.color08 {
+			background-color: #FF7E79;
+		}
+		.color09 {
+			background-color: #FDFF5D;
+		}
+		.color10 {
+			background-color: #4FFF00;
+		}
+		.color11 {
+			background-color: #008FFF;
+		}
+		.color12 {
+			background-color: #FF008D;
+		}
+		
+	</style>
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
+	<!--<script src="js/jquery-2.1.3.min.js"></script>-->
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+								})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-62806102-3', 'auto');
+		ga('send', 'pageview');
+	</script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+								})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-62806102-4', 'auto');
+		ga('send', 'pageview');
+
+	</script>
+</head>
+
+<body>
+	<section class="clearfix">
+
+		<nav>
+			<h1>お絵かきアプリ</h1>
+			<!-- 線の色を変更するHTML要素 -->
+			<!-- 線の太さを変更するHTML要素 -->
+			<button id="clear_btn">クリア</button>
+			<input type="button" id="save" value="保存">
+			<br>
+
+
+			<input type="range" id="range" name="range" value="10" min="1" max="100">
+			<br>
+			<div id="sizeWaku">
+				<div id="sizeSample"></div>
+			</div>
+			<input type="color" id="color">
+			<table id="colorTable">
+				<tr>
+					<td class="color01"></td>
+					<td class="color02"></td>
+					<td class="color03"></td>
+					<td class="color04"></td>
+					<td class="color05"></td>
+					<td class="color06"></td>
+				</tr>
+				<tr>
+					<td class="color07"></td>
+					<td class="color08"></td>
+					<td class="color09"></td>
+					<td class="color10"></td>
+					<td class="color11"></td>
+					<td class="color12"></td>
+				</tr>
+			</table>
+			透明度<br>
+			<input type="range" id="toumei" name="range" value="100" min="1" max="100">
+			<br>
+			<input type="button" id="undo" value="undo" />
+			<input type="button" id="redo" value="redo" />
+			<br>
+			<!--<select id="styleChange" name="styleChange">
+				<option value="pen">ペン</option>
+				<option value="eraser">消しゴム</option>
+				<option value="line">ライン</option>
+				<option value="sikakuWaku">四角枠</option>
+				<option value="sikakuNuri">四角塗り</option>
+				<option value="circleWaku">円枠</option>
+				<option value="circleNuri">円塗り</option>
+			</select>-->
+			<input type="radio" name="tool" value="pen" checked="checked">ペン
+			<input type="radio" name="tool" value="line">ライン
+			<br>
+			<input type="radio" name="tool" value="sikakuNuri">四角塗り
+			<input type="radio" name="tool" value="sikakuWaku">四角枠
+			<br>
+			<input type="radio" name="tool" value="circleNuri">正円塗り
+			<input type="radio" name="tool" value="circleWaku">正円枠
+			<br>
+			<input type="radio" name="tool" value="ellipseNuri">楕円塗り
+			<input type="radio" name="tool" value="ellipseWaku">楕円枠
+			<br>
+			<input type="radio" name="tool" value="triangleNuri">三角塗り
+			<input type="radio" name="tool" value="triangleWaku">三角枠
+			<br>
+			消しゴム
+			<input type="checkbox" id="eraser" value="eraser">　スポイト<input type="checkbox" name="brush" id="spuit" />
+			<br>
+			<p>
+				文字サイズ
+				<br>
+				<input type="range" id="fontSize" name="range" value="20" min="8" max="100">
+				<br>
+				<div id="sizeWaku">
+					<span id="fontSizeSample">あ</span>
+				</div>
+				テキスト入力欄<br>
+			<textarea id="text" cols="19" rows="3" value="" placeholder="テキスト入力後canvasをダブルクリック！"></textarea>
+			</p>
+		</nav>
+		<canvas id="drowarea" width="1000" height="600" <!--style="border:1px solid blue;" -->></canvas>
+		<!--<button id="readImg">読み込み</button>-->
+		<div id="gallary"></div>
+	</section>
+
+
+	<script>
+		$(document).ready(function () {
+			
+			$('#colorTable td').on('click',function(){
+				paint.color = $(this).css('background-color');
+				$("#sizeSample").css("background-color",paint.color);
+				$("#fontSizeSample").css("color",paint.color);
+			});
+
+
+			$('#toumei').on('change', function () {
+				console.log($('#toumei').val() / 100);
+				paint.alphaSize = $('#toumei').val() / 100;
+				$('#sizeSample').css("opacity", $('#toumei').val() / 100);
+			}).on('input', function () {
+				$('#sizeSample').css("opacity", $('#toumei').val() / 100);
+				$('#fontSizeSample').css("opacity", $('#toumei').val() / 100);
+			});
+
+
+			var paint = {
+				style: "pen",
+				color: "#000000",
+				bold_line: $('#range').val(),
+				alphaSize: 1,
+				fontSize: 20
+			};
+			$('#sizeSample').css({
+				'width': paint.bold_line,
+				'height': paint.bold_line,
+				'margin-top': -(paint.bold_line / 2),
+				'margin-left': -(paint.bold_line / 2),
+			});
+			$('input[name="tool"]:radio').on('change', function () {
+				/*paint.style = $(this).val();*/
+				paint.style = $('input[name="tool"]:checked').val();
+			});
+
+			document.getElementById("drowarea");
+			//初期化
+			var canvas_mouse_event = false; //スイッチ [ true=線を引く, false=線は引かない ]  ＊＊＊
+			//var txy   = 10;               //iPadなどは15＋すると良いかも
+			var txy = 0;
+			var oldX = 0; //１つ前の座標を代入するための変数
+			var oldY = 0; //１つ前の座標を代入するための変数
+			var bold_line = 3; //ラインの太さをここで指定
+			//var color = "#fff"; //ラインの色をここで指定
+			var color = "#000"; //ラインの色をここで指定
+
+			/*			$('#colorChange').on('change', function () {
+							paint.color = $('#colorChange').val();
+						});*/
+
+			var can = $("#drowarea")[0]; //CanvasElement
+			var context = can.getContext('2d'); //描画するための準備！
+			console.log(context);
+
+
+			var undoImage = [];
+			var redoImage = [];
+
+			$(can).on('mousedown', function (e) {
+				undoImage.push(context.getImageData(0, 0, $('canvas').width(), $('canvas').height())); //描きだす直前の状態を保存
+				oldX = e.offsetX;
+				oldY = e.offsetY - txy;
+				canvas_mouse_event = true;
+			});
+			$('#undo').click(function (e) {
+				if (!undoImage.length) return;
+				redoImage.push(context.getImageData(0, 0, $('canvas').width(), $('canvas').height())); //現在の状態を保存
+				var nowImage = undoImage.pop();
+				context.putImageData(nowImage, 0, 0);
+			});
+			$('#redo').click(function (e) {
+				if (!redoImage.length) return;
+				undoImage.push(context.getImageData(0, 0, $('canvas').width(), $('canvas').height())); //現在の状態を保存
+				var nowImage = redoImage.pop();
+				context.putImageData(nowImage, 0, 0);
+			});
+
+
+
+			$(can).on("mousemove", function (e) {
+				if (canvas_mouse_event) { //trueの場合書き込みをする
+					context.globalAlpha = paint.alphaSize;
+					context.strokeStyle = paint.color;
+					context.fillStyle = paint.color;
+					if ($('#eraser:checked').val() == "eraser") {
+						context.globalCompositeOperation = "destination-out";
+					} else {
+						context.globalCompositeOperation = "source-over";
+					}
+					redoImage = [];
+					if (paint.style == "pen" || paint.style == "eraser") {
+						/*if(paint.style == "eraser"){
+							context.globalCompositeOperation = "destination-out";
+						}*/
+						var px = e.offsetX;
+						var py = e.offsetY - txy;
+						/*context.strokeStyle = paint.color;*/
+						context.lineWidth = paint.bold_line;
+						context.beginPath();
+						context.lineJoin = "round";
+						context.lineCap = "round";
+						context.moveTo(oldX, oldY);
+						context.lineTo(px, py);
+						context.stroke();
+						context.closePath();
+						oldX = px;
+						oldY = py;
+					} else if (paint.style == "line") {
+						context.putImageData(undoImage[undoImage.length - 1], 0, 0);
+						var px = e.offsetX;
+						var py = e.offsetY - txy;
+						/*context.strokeStyle = paint.color;*/
+						context.lineWidth = paint.bold_line;
+						context.beginPath();
+						context.lineJoin = "round";
+						context.lineCap = "round";
+						context.moveTo(oldX, oldY);
+						context.lineTo(px, py);
+						context.stroke();
+
+						var distance = Math.sqrt((px - oldX) * (px - oldX) + (py - oldY) * (py - oldY));
+						console.log(distance);
+
+					} else if (paint.style == "triangleNuri" || paint.style == "triangleWaku") {
+						context.putImageData(undoImage[undoImage.length - 1], 0, 0);
+						var px = e.offsetX;
+						var py = e.offsetY - txy;
+						/*context.strokeStyle = paint.color;
+						context.fillStyle = paint.color;*/
+						context.lineWidth = paint.bold_line;
+						var distance = Math.sqrt((px - oldX) * (px - oldX) + (oldY - py) * (oldY - py));
+						var radian = Math.atan2(py - oldY, px - oldX);
+						var degree = radian / Math.PI * 180;
+						var radian2 = (degree + 120) * Math.PI / 180;
+						var x2 = (Math.cos(radian2) * distance) + oldX;
+						var y2 = (Math.sin(radian2) * distance) + oldY;
+						var radian3 = (degree + 240) * Math.PI / 180;
+						var x3 = (Math.cos(radian3) * distance) + oldX;
+						var y3 = (Math.sin(radian3) * distance) + oldY;
+						console.log(degree + 120);
+
+						//線の端の形状
+						context.lineCap = 'square'; //round=丸い,square=四角い,butt=ラインキャップなし
+						context.beginPath(); //パスの開始
+						//始点
+						context.moveTo(px, py);
+						context.lineTo(x2, y2);
+						context.lineTo(x3, y3);
+						context.lineTo(px, py);
+
+						context.closePath(); //自動的に閉じてくれる
+						if (paint.style == "triangleNuri") {
+							context.fill(); //描画
+						} else if (paint.style == "triangleWaku") {
+							context.stroke(); //描画
+						}
+
+					} else if (paint.style == "sikakuWaku" || paint.style == "sikakuNuri" || paint.style == "circleWaku" || paint.style == "circleNuri" || paint.style == "ellipseWaku" || paint.style == "ellipseNuri" ) {
+						context.putImageData(undoImage[undoImage.length - 1], 0, 0);
+						var px = e.offsetX - oldX;
+						var py = e.offsetY - txy - oldY;
+						/*context.strokeStyle = paint.color;
+						context.fillStyle = paint.color;*/
+						context.lineWidth = paint.bold_line;
+						context.beginPath();
+						//四角線を設定
+						if (paint.style == "sikakuWaku") {
+							context.rect(oldX, oldY, px, py);
+							//線を描く
+							context.stroke();
+						} else if (paint.style == "sikakuNuri") {
+							context.rect(oldX, oldY, px, py);
+							context.fill();
+						} else if (paint.style == "circleWaku" || paint.style == "circleNuri") {
+							//円の設定（X中心軸,Y中心軸、半径、円のスタート度、円のエンド度、回転）
+							context.arc(oldX, oldY, Math.sqrt(Math.pow(px, 2) + Math.pow(py, 2)), 0, Math.PI * 2, false); // full circle
+							if (paint.style == "circleWaku") {
+								//描画
+								context.stroke();
+							} else if (paint.style == "circleNuri") {
+								context.fill();
+							}
+						} else if (paint.style == "ellipseWaku" || paint.style == "ellipseNuri") {
+							context.ellipse(oldX, oldY,px,py, 0, Math.PI * 2, false);
+							if (paint.style == "ellipseWaku") {
+								context.stroke();
+							} else if (paint.style == "ellipseNuri") {
+								context.fill();
+							}
+						}
+					}
+				}
+			});
+
+
+			$('#fontSize').on('change', function () {
+				paint.fontSize = $('#fontSize').val();
+			}).on('input', function () {
+				var val = $(this).val();
+				$('#fontSizeSample').css({
+					'font-size': val + "px",
+					'line-height': val + "px",
+					/*'width': val,
+					'height': val,*/
+					'margin-top': -(val / 2),
+					'margin-left': -(val / 2)
+				});
+			});
+			
+
+			$(can).on("dblclick", function (e) {
+				if($('#spuit').is(':checked')){//スポイトのチェックボックスにチェックが入っていれば
+					spuitImage = context.getImageData(e.offsetX, e.offsetY, 1, 1);
+					console.log(spuitImage);
+					r = spuitImage.data[0];
+					g = spuitImage.data[1];
+					b = spuitImage.data[2];
+					console.log(spuitImage.data[3]/255);
+					paint.alphaSize = spuitImage.data[3] / 255;
+					spuit_color = 'rgb(' + r +','+ g + ',' + b +')';
+					$('.color18').css("background-color",spuit_color);
+					paint.color = spuit_color;
+					$("#sizeSample").css({
+						"background-color":spuit_color,
+						"opacity":paint.alphaSize
+					});
+					$("#fontSizeSample").css({
+						"color":spuit_color,
+						"opacity":paint.alphaSize
+					});
+					$('#toumei').val(paint.alphaSize * 100);
+					
+				}else{
+					var str;
+					if ($('#text').val()) {
+						str = $('#text').val();
+					} else {
+						str = prompt('文字を入力', '');
+						if (!str) {
+							str = "";
+						}
+					}
+					var px = e.offsetX;
+					var py = e.offsetY;
+					context.globalAlpha = paint.alphaSize;
+					if ($('#eraser:checked').val() == "eraser") {
+						context.globalCompositeOperation = "destination-out";
+					} else {
+						context.globalCompositeOperation = "source-over";
+					}
+					//カラー指定
+					context.fillStyle = paint.color;
+					//fontサイズ、書式
+					context.font = paint.fontSize + "px _sans";
+					context.strokeStyle = paint.color;
+					//文字の設置位置
+					context.textBaseline = "top"; //top,middle,bottom...
+					//表示文字と座標
+					context.fillText(str, px, py); //ctx.fillText(文字列,x,y)
+				}
+			});
+
+
+
+
+			$(can).on("mouseup", function () {
+				canvas_mouse_event = false; //書き込みをやめる
+			});
+			$(can).on("mouseout", function () {
+				canvas_mouse_event = false; //書き込みをやめる
+			});
+
+			$('#clear_btn').on("click", function () {
+				context.beginPath();
+				context.clearRect(0, 0, can.width, can.height);
+				canvas_mouse_event = false;
+			});
+
+
+			var rng = $('#range');
+
+			$('#range').on("change", function () {
+				boldChange(this);
+			}).on('input', function () {
+				var val = $(this).val();
+				$('#sizeSample').css({
+					'width': val,
+					'height': val,
+					'margin-top': -(val / 2),
+					'margin-left': -(val / 2),
+				});
+			});
+
+
+			function boldChange(x) {
+				console.log($(x));
+				console.log($(x).val());
+				var val = $(x).val();
+				paint.bold_line = val;
+				$('#sizeSample').css({
+					'width': val,
+					'height': val
+				});
+			}
+			boldChange(rng);
+
+			$("#color").on("change", function () {
+				var val = $(this).val();
+				paint.color = val;
+				$('#sizeSample').css("background-color", val);
+				$('#fontSizeSample').css("color", paint.color);
+				console.log(paint.color);
+			});
+
+			var images = [];
+			images = JSON.parse(localStorage.getItem('images'));
+			if (!images) {
+				images = [];
+			}
+			$('#save').on("click", function () {
+				images.unshift(can.toDataURL());
+				localStorage.setItem('images', JSON.stringify(images));
+				roadGallary(can.toDataURL());
+			});
+
+			function roadGallary(x) {
+				var img = $('<img>').attr({
+					width: 100,
+					height: 60,
+					src: x
+				});
+				//---------save機能--------------------------------------------------------------------------
+				var link = $('<a>').attr({
+					href: x.replace('image/png', 'application/octet-stream'),
+					download: new Date().getTime() + '.png'
+				});
+				$('#gallary').prepend(link.append(img.addClass('thumbnail')));
+				addDragEvent();
+			}
+			console.log(images);
+			for (var i = images.length - 1; i >= 0; i--) {
+				roadGallary(images[i]);
+			}
+
+
+			$('#gallary').on('click', '.thumbnail', function () {
+				//thumbimg = document.querySelector('#gallary img');
+				context.globalAlpha = 1;
+				context.globalCompositeOperation = "source-over";
+				context.beginPath();
+				context.clearRect(0, 0, can.width, can.height);
+				canvas_mouse_event = false;
+				context.drawImage(this, 0, 0);
+				console.log(this);
+				console.log(localStorage.getItem());
+				
+				return false;
+			});
+
+			$('#gallary').on('dblclick', '.thumbnail', function () {
+				console.log($(this).parent().attr("href"));
+				location.href = $(this).parent().attr("href");
+				/*location.href = $(this).attr('href');*/
+				console.log(location);
+			});
+
+			function addDragEvent() {
+				$(".thumbnail").draggable({
+					axis: 'x',
+					stop: function (event, ui) {
+						if (ui.position.left > -100 && ui.position.left < 100) {
+							$(this).position().left = 0;
+							$(this).animate({
+								left: 0
+							}, 200, "easeOutQuart");
+							$(this).css("opacity", "");
+						}
+						if (ui.position.left <= -100 || ui.position.left >= 100) {
+							$(this).animate({
+								opacity: 0
+							}, 100, "linear");
+							if (ui.position.left <= -100) {
+								$(this).animate({
+									left: "-=200px"
+								}, 200, "easeOutQuart");
+							} else {
+								$(this).animate({
+									left: "+=200px"
+								}, 200, "easeOutQuart");
+							}
+							var index = $('#gallary img').index(this);
+							/*localStorageDataKousin(index);*/
+							images.splice(index, 1);
+							localStorage.setItem('images', JSON.stringify(images));
+
+							var th = $(this);
+							setTimeout(function () {
+								$(th).parent().remove();
+								$(th).remove();
+							}, 600);
+						}
+					},
+					drag: function (event, ui) {
+						$(this).css("opacity", 1 + ui.position.left / 200);
+					}
+				});
+			}
+			addDragEvent();
+			/*$('#gallary').draggable({
+				axis: "y",
+				stop: function () {
+					console.log($('#gallary'));
+					console.log($('#gallary').css("top"));
+					var top = parseInt($(this).css("top"), 10);
+					var bottom = $(this).css("bottom");
+					console.log(bottom);
+					if (top > 0) {
+						$(this).css("top", 0);
+					}
+					if (bottom > 0) {
+						$(this).css("bottom", 0);
+					}
+				}
+			});*/
+
+		});
+	</script>
+</body>
+
+</html>

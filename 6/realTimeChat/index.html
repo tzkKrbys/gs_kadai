@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="noindex,nofollow">
+	<title>リアルタイムチャット</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src='https://cdn.mlkcca.com/v2.0.0/milkcocoa.js'></script>
+	<script src="main.js"></script>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			
+		}
+		
+		body {
+			color: #fff;
+			text-shadow: 1px 1px 3px rgba(0,0,0,1);
+			padding-top: 10px;
+			background-image: url(images/IMG_3652.jpg);
+			
+		}
+		h1 {
+			text-align: center;
+		}
+		.clearfix:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+
+		section {
+			background: #27365F;
+			padding: 20px;
+			width: 840px;
+			margin: 0 auto;
+			border-radius: 20px;
+			position: relative;
+			box-shadow: 5px 5px 5px rgba(0,0,0,0.6);
+			/*background: inherit;*/
+		}
+/*		section:before {
+			-webkit-filter: blur(6px);
+			filter: blur(6px);
+			content: "";
+			position: absolute;
+			top: -5px;
+			bottom: -5px;
+			left: -5px;
+			right: -5px;
+			background: inherit;
+			overflow: hidden;
+		}*/
+		.inputArea {
+			float: right;
+			padding-top: 30px;
+			margin-right: 10px;
+		}
+
+		.text_name {
+			display: table-row;
+		}
+		.text_Time {
+			display: table-row;
+		}
+		.testMe {
+			text-align: right;
+			margin-top: 10px;
+		}
+		.text_message {
+			font-size: 16px;
+			background-color: #ccc;
+			padding: 10px;
+			border-radius: 12px;
+			color: #000;
+			text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+			max-width: 280px;
+			display: table-cell;
+			vertical-align: middle;
+			
+			position: relative;
+			background-color: #ccc;
+			word-wrap: break-word;
+		}
+		.text_message:before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 0;
+			margin-top: -10px;
+			margin-left: -8px;
+			width: 0;
+			height: 0;
+			border-top: 8px solid transparent;
+			border-right: 8px solid #ccc;
+			border-bottom: 8px solid transparent;
+		}
+
+		.testMe .text_message {
+			background-color: #0f0;
+			margin-left: auto;
+			margin-right: 0;
+			text-align: left;
+		}
+		.testMe .text_message:before {
+			left: auto;
+			right: 0;
+			margin-left: 0;
+			margin-right: -8px;
+			border-right: none;
+			border-left: 8px solid #0f0;
+		}
+		#sendMessage {
+			height: 60px;
+			width: 100%;
+			background-color: #cdf;
+			border-radius: 20px;
+			font-size: 20px;
+			color: #999;
+			text-shadow: -1px -1px 0 rgba(0,0,0,0.8);
+		}
+		.bg_glay{
+			animation: bg_li-color 1s 1;
+			-webkit-animation: bg_li-color 1s 1;
+		}
+		@-webkit-keyframes bg_li-color {
+			0% { background: #FF8000; }
+			/* 70% { background: yellow; } */
+			100% { background: #716e6e; }
+		}
+		@keyframes bg_li-color {
+			0% { background: #FF8000; }
+			/* 70% { background: yellow; } */
+			100% { background: #716e6e; }
+		}
+		
+		ul#board {
+			overflow: auto;
+			width: 500px;
+			height: 500px;
+			list-style-type: none;
+			background: #418ed0;
+			padding: 10px;
+			border-radius: 10px;
+			box-shadow: 1px 1px 10px rgba(0,0,0,0.8) inset;
+		}
+		#board li div {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		#board li div>img{
+			float: left;
+			margin-right: 12px;
+			
+		}
+		#board li.testMe div{
+			text-align: right;
+		}
+		#board li.testMe div>img{
+			float: right;
+			margin-left: 12px;
+			margin-right: 0;
+			
+		}
+		
+		#board li {
+			margin-top: 10px;
+			font-size: 10px;
+			color: #fff;
+			display: table;
+		}
+		#board li.testMe {
+			margin-left: auto;
+			margin-right: 0;
+		}
+		.id {
+			display: none;
+		}
+		img {
+			border-radius: 50%;
+			display: inline-block;
+			width: 50px;
+			height: 50px;
+		}
+		input {
+			height: 34px;
+			width: 240px;
+			font-size: 14px;
+			border-radius: 10px;
+			padding: 5px;
+			box-shadow: 1px 1px 3px rgba(0,0,0,0.6) inset;
+			margin-bottom: 16px;
+		}
+		textarea {
+			font-size: 14px;
+			border-radius: 10px;
+			padding: 8px;
+			box-shadow: 2px 2px 5px rgba(0,0,0,0.6) inset;
+		}
+		img.snsIcon {
+			border-radius: 4px;
+			width: 30px;
+			height: 30px;
+			margin-right: 10px;
+		}
+		#latlonBtn {
+			height: 40px;
+			width: 120px;
+			background: #4cb192;
+			border-radius: 10px;
+			color: #fff;
+			font-size: 14px;
+			text-shadow: 0 0 2px rgba(0,0,0,1);
+			margin-top: 10px;
+		}
+		#latlonBtn:disabled {
+			background: #555;
+			color: #555;
+		}
+	</style>
+</head>
+
+<body>
+<section>
+	<h1>リアルタイムチャットアプリ</h1>
+	<p class="inputArea">
+	お名前<br>
+	<input type="text" id="name" value="" placeholder="お名前を入力してね"><br>
+	<img src="images/facebookIcon50x50.png" alt="" class="snsIcon">facebook id(アイコン用)<br>
+		<input type="text" id="facebookId" value="" placeholder="facebook id"><br>
+		<img src="images/twitterIcon50x50.png" alt="" class="snsIcon">twitter id(アイコン用)<br>
+		<input type="text" id="twitterId" value="" placeholder="twitter id">
+	<br>
+	本文<br>
+		<textarea name="" id="msg" cols="30" rows="4" placeholder="メッセージを入力してね（shift + enterで発言できます）"></textarea><br>
+		<button id="sendMessage" name="button">発言（shift + enter）</button><br>
+		<input type="button" id="latlonBtn" value="位置情報送信" disabled="disabled">
+	</p>
+	<div id="right">
+		<ul id="board"></ul>
+	</div>
+	<!--<img src="https://graph.facebook.com/tzk.krbys/picture?type=large" width="100" height="100" id="photoImg">-->
+	</section>
+	<audio id="remarkSound" src="audio/hyun01.mp3" preload>
+		<audio id="paper_round" src="audio/paper-round1.mp3" preload>
+</body>
+
+</html>

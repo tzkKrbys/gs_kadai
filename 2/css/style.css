@@ -1,0 +1,239 @@
+@charset "utf-8";
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	height: 100vh;
+	color: #fff;
+	font-size: 18px;
+	background: #333 url(../images/marioBlock.jpg);
+	text-shadow: 2px 2px 2px rgba(0,0,0,1);
+	-webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+}
+.clearfix:after {
+	content:"";
+	display: block;
+	clear: both;
+}
+.black {
+	float: left;
+	width: 280px;
+	text-align: center;
+	background:rgba(0,0,0,0.2);
+	border-radius: 10px;
+	margin: 10px 10px;
+	box-shadow: 0 3px 6px rgba(0,0,0,1) inset;
+	line-height: 50px;
+}
+.black:first-child{
+	width: 340px;
+}
+.black:last-child{
+	width: 160px;
+}
+.inner {
+	padding: 10px 20px 0;
+	width: 850px;
+	margin: 0 auto;
+	background: url(../images/superMarioStartScreen.jpeg) no-repeat center center #333;
+	background-size: cover;
+	height: 100%;
+	box-shadow: 5px 0 20px rgba(0,0,0,1) inset, -5px 0 20px rgba(0,0,0,1) inset;
+	border-left: 2px solid #000;
+	border-right: 2px solid #000;
+	-webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+}
+.init {
+	font-size: 100px;
+	line-height: 1;
+}
+
+h1 {
+	text-align: center;
+	font-size: 50px;
+	color: #fff;
+	text-shadow: 5px 5px 5px rgba(0,0,0,1);
+}
+#compHand {
+	width: 100px;
+	height: 100px;
+	background: #6cf center center no-repeat url(../images/Bowser.gif);
+	margin:0 auto;
+	box-sizing: border-box;
+	border: 2px solid #05a;
+	border-radius: 50%;
+	position: absolute;
+	top: 15px;
+	left: 250px;
+	cursor: pointer;
+}
+#myHand {
+	width: 100px;
+	height: 100px;
+	background: #5f8 center center no-repeat url(../images/marioStandUp.gif);
+	margin:0 auto;
+	box-sizing: border-box;
+	border: 2px solid #0a4;
+	border-radius: 50%;
+	position: absolute;
+	top: 285px;
+	left: 250px;
+	cursor: pointer;
+}
+
+#waku {
+	width: 600px;
+	height:400px;
+	position: relative;
+	background: rgba(255,255,255,0.4);
+	border-radius: 50px;
+	margin: 0 auto;
+	color: #666;
+	box-shadow: 5px 5px 10px rgba(0,0,0,1);
+	cursor: pointer;
+}
+#countDown {
+	margin: 0 auto;
+	text-align: center;
+	line-height: 325px;
+	font-size: 300px;
+}
+
+.button {
+	width: 100px;
+	height: 30px;
+	background: #eee;
+	border: 1px solid #000;
+	border-radius: 10px;
+	text-align: center;
+}
+
+ul#setumei {
+	list-style-type: none;
+	background: rgba(255,255,255,0.5);
+	width: 150px;
+	padding: 20px;
+	border-radius: 10px;
+	font-size: 16px;
+	position:absolute;
+	bottom:80px;
+	left:20px;
+	box-shadow: 6px 6px 10px rgba(0,0,0,1);
+	text-shadow: 1px 1px 3px rgba(0,0,0,1);
+}
+
+
+div.fireBall {
+	width: 40px;
+	height: 40px;
+	background: url(../images/fireball.png);
+	background-size: cover;
+	/*border-radius: 50%;*/
+	position: absolute;
+	-webkit-animation-name: anime1;
+	animation-name: anime1;
+	-webkit-animation-duration: .2s;
+	animation-duration: .2s;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+}
+
+div.fireBallGreen {
+	width: 40px;
+	height: 40px;
+	background: url(../images/fireballGreen.png);
+	background-size: cover;
+	position: absolute;
+	-webkit-animation-name: anime1;
+	animation-name: anime1;
+	-webkit-animation-duration: .3s;
+	animation-duration: .3s;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+}
+
+div.fireBallBlue {
+	width: 40px;
+	height: 40px;
+	background: url(../images/fireballBlue.png);
+	background-size: cover;
+	position: absolute;
+	-webkit-animation-name: anime1;
+	animation-name: anime1;
+	-webkit-animation-duration: .3s;
+	animation-duration: .3s;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+}
+@-webkit-keyframes anime1 {
+	0%{-webkit-transform: rotate(0);transform: rotate(0);}
+	100%{-webkit-transform: rotate(720deg);transform: rotate(720deg);}
+}
+@keyframes anime1 {
+	0%{-webkit-transform: rotate(0);transform: rotate(0);}
+	100%{-webkit-transform: rotate(720deg);transform: rotate(720deg);}
+}
+/*ul#setumei:before {
+	content: '';
+	position: absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	background: inherit;
+	-webkit-filter: blur(5px);
+	filter: blur(5px);
+}*/
+
+/*body{
+    margin:0;
+    padding:0;
+    text-align:left;
+    font-size: 32px;
+}
+header{
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+main{
+    border-bottom:1px solid #ccc;
+}
+footer{
+    background-color: #fff;
+    border-bottom:1px solid #ccc;
+    text-align: center;
+}
+p{
+    font-size:200%;
+    text-align: center;
+    border-bottom:1px solid #fff;
+    height:200px;
+}
+ul{
+    padding: 0;
+    border-top: 1px solid #000000;
+    display:table;
+    table-layout: fixed;
+    width:100%;
+}
+li{
+    list-style-type:none;
+    border: 1px solid #666;
+    background-color: #FFF;
+    display:table-cell;
+    cursor: pointer;
+}
+li:hover{
+    background: #0066CC;
+    color:#fff;
+}*/

@@ -1,0 +1,225 @@
+@charset "utf-8";
+html,
+body,
+main,
+section,
+.stage {
+	height: 100%;
+}
+
+main {
+	position: relative;
+}
+
+.stage {
+	-webkit-perspective: 1000;
+	perspective: 1000;
+}
+ul.navi {
+	display: table;
+}
+ul.navi li {
+	display: table-cell;
+	width: 100px;
+	text-align: center;
+	border-left: 1px solid #000;
+}
+ul.navi li:last-child {
+	border-right: 1px solid #000;
+}
+ul.thumb {
+	position: fixed;
+	list-style-type: none;
+	right: 0;
+	bottom:0;
+	/*display: table;*/
+}
+ul.thumb li {
+	/*display: table-cell;*/
+}
+ul.thumb li:nth-child(2) {
+	background-image: url(../images/ChampsElysees_thumb.jpg);
+}
+ul.thumb li:nth-child(3) {
+	background-image: url(../images/Versailles00_thumb.jpg);
+}
+ul.thumb li:nth-child(4) {
+	background-image: url(../images/Louvre_thumb.jpg);
+}
+ul.thumb li:nth-child(5) {
+	background-image: url(../images/montmartre_thumb.jpg);
+}
+ul.thumb li:nth-child(6) {
+	background-image: url(../images/Versailles02_thumb.jpg);
+}
+ul.thumb li:nth-child(7) {
+	background-image: url(../images/Versailles01_thumb.jpg);
+}
+ul.thumb li {
+	width: 160px;
+	height: 90px;
+}
+#cube {
+	height: 400px;
+	width: 400px;
+	position: relative;
+	margin: 0 auto;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -200px;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	/*transform: rotate3d(0,0,0,0deg);*/
+	-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+	transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+	-webkit-transition: all 1s linear;
+	transition: all 1s linear;
+}
+#cube.stop {
+	
+}
+#cube.smallSize.move {
+	-webkit-transform: rotateY(360deg) rotateX(360deg) scale3d(0.5,0.5,0.5);
+	transform: rotateY(360deg) rotateX(360deg) scale3d(0.5,0.5,0.5);
+/*	-webkit-transform: rotateX(90deg) rotateY(180deg) rotateZ(180deg) scale3d(0.5,0.5,0.5);
+	transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg) scale3d(0.5,0.5,0.5);*/
+	-webkit-transition: all 10s linear;
+	transition: all 10s linear;
+}
+#cube.smallSize {
+	-webkit-transform: scale3d(0.5,0.5,0.5) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+	transform: scale3d(0.5,0.5,0.5) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+	-webkit-transition: all 2s ease;
+	transition: all 2s ease;
+}
+/*#cube:hover {
+	-webkit-animation: kaiten 10s linear infinite;
+	animation: kaiten 10s linear infinite;
+	-webkit-transition: all 10s ease;
+	transition: all 10s ease;
+	-webkit-transform: rotate3d(1.5,1.2,1.4,360deg) scale3d(0.5,0.5,0.5);
+	transform: rotate3d(1.5,1.2,1.4,360deg) scale3d(0.5,0.5,0.5);
+	-webkit-transform-origin: 50% 50% 0px;
+	-ms-transform-origin: 50% 50% 0px;
+	transform-origin: 50% 50% 0px;
+}*/
+/*#cube.rollingCube {
+	-webkit-animation: kaiten 10s linear infinite;
+	animation: kaiten 10s linear infinite;
+	-webkit-transition: all 1s ease;
+	transition: all 1s ease;
+	-webkit-transform-origin: 50% 0 0;
+	-ms-transform-origin: 50% 0 0;
+	transform-origin: 50% 50% 0px;
+}*/
+#cube.stoppingCube {
+	-webkit-transition: all 1s ease;
+	transition: all 1s ease;
+}
+#cube.front {
+	-webkit-transform: rotate3d(0,0,0,0deg);
+	transform: rotate3d(0,0,0,0deg);
+}
+#cube.back {
+	-webkit-transform: rotate3d(0,1,0,180deg);
+	transform: rotate3d(0,1,0,180deg);
+}
+#cube.top {
+	-webkit-transform: rotate3d(1,0,0,-90deg);
+	transform: rotate3d(1,0,0,-90deg);
+}
+#cube.bottom {
+	-webkit-transform: rotate3d(1,0,0,90deg);
+	transform: rotate3d(1,0,0,90deg);
+}
+#cube.left {
+	-webkit-transform: rotate3d(0,1,0,90deg);
+	transform: rotate3d(0,1,0,90deg);
+}
+
+#cube.right {
+	-webkit-transform: rotateY(270deg);
+	transform: rotateY(270deg);
+}
+
+
+
+/*@keyframes kaiten {
+	0%{transform: rotate3d(1.5,1.2,1.4,0deg) scale3d(0.5,0.5,0.5);}
+	100%{transform: rotate3d(1.5,1.2,1.4,360deg) scale3d(0.5,0.5,0.5);}
+}*/
+
+
+#cube div {
+	height: 400px;
+	width: 400px;
+	position: absolute;
+	color: #fff;
+	text-align: center;
+	line-height: 400px;
+}
+
+.pict {
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	opacity: 0.9;
+}
+.side_top {
+	background-color: rgba(0, 0, 0, 0.7);
+	background-image: url(../images/Louvre.jpg);
+	top: -200px;
+	left: 0px;
+	-webkit-transform: rotateX(90deg);
+	-ms-transform: rotateX(90deg);
+	transform: rotateX(90deg);
+}
+
+.side_bottom {
+	background-color: rgba(0, 0, 0, 0.7);
+	background-image: url(../images/montmartre.jpg);
+	bottom: -200px;
+	left: 0px;
+	-webkit-transform: rotateX(-90deg);
+	-ms-transform: rotateX(-90deg);
+	transform: rotateX(-90deg);
+}
+
+.side_front {
+	background-color: rgba(215, 0, 81, 0.7);
+	background-image: url(../images/ChampsElysees.jpg);
+	top: 0px;
+	left: 0px;
+	-webkit-transform: translateZ(200px);
+	transform: translateZ(200px);
+}
+
+.side_back {
+	background-color: rgba(215, 0, 81, 0.7);
+	background-image: url(../images/Versailles00.jpg);
+	top: 0px;
+	left: 0px;
+	-webkit-transform: translateZ(-200px);
+	transform: translateZ(-200px) rotateY(180deg);
+}
+
+.side_right {
+	background-color: rgba(0, 160, 233, 0.7);
+	background-image: url(../images/Versailles01.jpg);
+	top: 0px;
+	right: -200px;
+	-webkit-transform: rotateY(90deg);
+	-ms-transform: rotateY(90deg);
+	transform: rotateY(90deg);
+}
+
+.side_left {
+	background-color: rgba(0, 160, 233, 0.7);
+	background-image: url(../images/Versailles02.jpg);
+	top: 0px;
+	left: -200px;
+	-webkit-transform: rotateY(-90deg);
+	transform: rotateY(-90deg);
+}
